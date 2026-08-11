@@ -1,1 +1,119 @@
+# ==============================
+# Environment Variables / Secrets
+# ==============================
+
 .env
+.env.*
+!.env.example
+
+# Ignore .env files inside any folder
+**/.env
+**/.env.*
+!**/.env.example
+
+
+# ==============================
+# Python
+# ==============================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+agentic_env/
+**/venv/
+**/.venv/
+
+
+# ==============================
+# Jupyter Notebook
+# ==============================
+
+.ipynb_checkpoints/
+
+
+# ==============================
+# Testing / Coverage
+# ==============================
+
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+
+# ==============================
+# Build / Distribution
+# ==============================
+
+build/
+dist/
+*.egg-info/
+.eggs/
+
+
+# ==============================
+# IDE / Editor
+# ==============================
+
+.vscode/
+.idea/
+
+*.swp
+*.swo
+
+
+# ==============================
+# OS Generated Files
+# ==============================
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+
+# ==============================
+# Logs
+# ==============================
+
+*.log
+logs/
+
+
+# ==============================
+# Temporary Files
+# ==============================
+
+*.tmp
+*.temp
+
+
+# ==============================
+# Local Databases / Data
+# ==============================
+
+*.db
+*.sqlite
+*.sqlite3
+
+
+# ==============================
+# Generated / Scraped Data
+# ==============================
+
+scraped_data/
+output/
+outputs/
