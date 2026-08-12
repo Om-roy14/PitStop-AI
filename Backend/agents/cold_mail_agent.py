@@ -198,8 +198,8 @@ def get_cold_email():
         ]
     )
     result = response.choices[0].message.content.strip()
-    print("\n\n")
-    print( result)
+    # print("\n\n")
+    # print( result)
+    return result
     
     
-get_cold_email()
