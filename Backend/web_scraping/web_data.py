@@ -7,8 +7,8 @@ import json
 load_dotenv()
 
 client = OpenAI(
-    api_key=os.getenv("API_KEY"),
-    base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+    api_key=os.getenv("COLD-EMAIL-API-KEY"),
+    base_url="https://api.groq.com/openai/v1"
 )
 
 
@@ -20,7 +20,7 @@ def get_structured_data(url):
     scraped_data = docs[0].page_content
 
     response = client.chat.completions.create(
-        model="gemini-3-flash-preview",
+        model="llama-3.3-70b-versatile",
         messages=[
             {
                 "role": "system",

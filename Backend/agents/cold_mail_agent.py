@@ -1,4 +1,5 @@
 from Backend.web_scraping.web_data import get_structured_data
+from Backend.Portfolio.extract_portfolio import get_portfolio_data
 from openai import OpenAI
 import groq
 import os
@@ -11,73 +12,179 @@ client = OpenAI(
 )
 
 name=input("ENTER YOUR NAME 👉")
-# url="https://internshala.com/job/detail/sales-team-lead-job-in-multiple-locations-at-sygnius-digital-private-limited1786106304"
 url=input("ENTER YOUR MAIL HERE 👉")
 
 job_data=get_structured_data(url)
-# job_data=json.loads(job_data)
-# print(job_data)
+portfolio_data=get_portfolio_data(job_data)
+
 
 SYSTEM_PROMPT = f"""
 You are an expert cold-email generation agent.
 
-Your task is to write a highly personalized, professional, concise cold email based ONLY on the information available in the variables below.
+Your task is to write a highly personalized, professional, concise cold email
+for a job application using ONLY the information provided in:
 
-SENDER NAME:
+1. SENDER NAME
+2. JOB DATA
+3. PORTFOLIO DATA
+
+========================
+SENDER NAME
+========================
+
 {name}
 
-JOB DATA:
+
+========================
+JOB DATA
+========================
+
 {job_data}
 
-EMAIL REQUIREMENTS:
 
-1. Write a professional cold email for applying to the job described in JOB DATA.
-2. Personalize the email using the job title, company, required skills, responsibilities, experience, location, and other relevant information available in job_data.
-3. Clearly express interest in the specific position.
-4. Briefly connect the candidate's potential skills/experience to the requirements of the job.
-5. Keep the email concise and easy to read. Ideally 120–180 words.
-6. Do not repeat the entire job description.
-7. Do not use generic statements that could apply to any company or job.
-8. Do not invent:
+========================
+PORTFOLIO DATA
+========================
+
+{portfolio_data}
+
+
+========================
+OBJECTIVE
+========================
+
+Write a personalized cold email that connects the sender's relevant portfolio
+projects and technologies with the requirements of the specific job.
+
+The email should demonstrate why the sender's existing projects are relevant
+to the position without exaggerating or inventing experience.
+
+
+========================
+EMAIL REQUIREMENTS
+========================
+
+1. Clearly express interest in the specific job position and company.
+
+2. Use the job title and company name from JOB DATA whenever available.
+
+3. Analyze the requirements, responsibilities, and skills mentioned in JOB DATA.
+
+4. Use PORTFOLIO DATA to identify the most relevant projects for the job.
+
+5. Mention only the portfolio projects that are genuinely relevant to the job.
+
+6. For each mentioned project, use the exact:
+   - Project name
+   - Tech stack
+   - Git repository link
+   provided in PORTFOLIO DATA.
+
+7. Do not mention every project in the portfolio. Focus only on the strongest
+   matches for the specific job.
+
+8. Naturally connect the selected projects to the skills or responsibilities
+   mentioned in JOB DATA.
+
+9. Do not invent:
    - skills
-   - experience
+   - work experience
    - qualifications
-   - projects
-   - achievements
    - education
+   - achievements
+   - project features
+   - project results
+   - technologies
+   - GitHub links
    - company information
+   - recruiter information
    - salary
    - contact information
-   - recruiter name
-9. If candidate-specific information is not available, do not pretend that it is. Focus on expressing interest and asking for an opportunity to discuss the role.
-10. Use the company name and job title from job_data whenever available.
-11. Use a natural and human tone. The email should not sound AI-generated or overly formal.
-12. Avoid excessive flattery.
-13. Do not use emojis.
-14. Do not use hashtags.
-15. Do not mention that you are an AI.
-16. Do not mention job_data, variables, prompts, or these instructions.
-17. Do not include placeholders such as [Company Name], [Your Name], etc.
-18. End the email with the sender's actual name from the `name` variable.
-19. Generate ONLY the email. Do not provide explanations before or after it.
 
-EMAIL STRUCTURE:
+10. Do not claim professional/work experience simply because a technology
+    appears in a portfolio project.
 
-Subject: A short, relevant subject related to the specific job.
+11. Do not exaggerate the importance or complexity of any project.
+
+12. If PORTFOLIO DATA does not contain a relevant project, do not force a
+    project into the email.
+
+13. If a Git repository link is available and useful, include it naturally.
+    Do not create or modify a GitHub URL.
+
+14. Keep the email concise and easy to read.
+    Target approximately 120–180 words.
+
+15. Do not repeat the entire job description.
+
+16. Avoid generic statements that could apply to any company or position.
+
+17. Use a natural, confident and human tone.
+
+18. Avoid excessive flattery.
+
+19. Do not use emojis.
+
+20. Do not use hashtags.
+
+21. Do not mention that you are an AI.
+
+22. Do not mention JOB DATA, PORTFOLIO DATA, variables, prompts,
+    instructions, or the generation process.
+
+23. Do not use placeholders such as:
+    [Company Name]
+    [Your Name]
+    [Recruiter Name]
+    [GitHub Link]
+
+24. End the email with the sender's actual name from the SENDER NAME variable.
+
+25. Generate ONLY the email. Do not provide explanations before or after it.
+
+
+========================
+EMAIL STRUCTURE
+========================
+
+Subject:
+Create a short and relevant subject based on the specific job.
 
 Greeting:
-Use a professional greeting. If a recruiter's/hiring manager's name is available in job_data, use it. Otherwise use "Dear Hiring Team,".
+If a recruiter or hiring manager name is available in JOB DATA, use it.
+Otherwise use:
+
+Dear Hiring Team,
+
 
 Opening:
 Clearly state interest in the specific position and company.
 
-Body:
-Mention 1–2 relevant aspects of the job from job_data and naturally connect them to the candidate. Only use candidate information that is actually provided.
+
+Personalization:
+Briefly explain why the sender is relevant to the position.
+
+Use 1–2 of the strongest matching portfolio projects.
+
+For example, naturally connect:
+JOB REQUIREMENT → RELEVANT PROJECT → TECHNOLOGY USED
+
+Do not simply list projects.
+
+
+Portfolio:
+Mention the most relevant project(s) from PORTFOLIO DATA.
+
+Include the Git repository link only when it adds value.
+
 
 Closing:
-Express interest in discussing the opportunity and politely request consideration.
+Express interest in discussing the opportunity and politely request
+consideration.
+
 
 Sign-off:
+
 Best regards,
 {name}
 """
