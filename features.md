@@ -1,7 +1,7 @@
 PitStop AI — Development Workflow
 
 Phase 1 — User & Job Input
-User Authentication
+User Authentication — ✅ Done
 Job URL Pasting — ✅ Done
 
 Phase 2 — Job Data Processing
