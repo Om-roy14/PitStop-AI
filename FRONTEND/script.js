@@ -91,6 +91,14 @@ document
             document
                 .getElementById("registerPassword")
                 .value;
+        const linkedin_id =
+            document
+                .getElementById("registerLinkedin")
+                .value;
+        const github_id =
+            document
+                .getElementById("registerGithub")
+                .value;
 
 
         const message =
@@ -117,7 +125,11 @@ document
 
                         email: email,
 
-                        password: password
+                        password: password,
+
+                        linkedin_id : linkedin_id,
+
+                        github_id : github_id,
 
                     })
 

@@ -24,8 +24,19 @@ class User(Base):
         nullable=False,
         index=True
     )
-
     password = Column(
         String(255),
         nullable=False
     ) 
+    linkedin_id = Column(
+        String(150),
+        unique=True,
+        nullable=False,
+        index=True
+    )
+    github_id = Column(
+        String(150),
+        unique=True,
+        nullable=False,
+        index=True
+    )

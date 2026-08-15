@@ -11,7 +11,9 @@ def register_user(
     db: Session,
     name: str,
     email: str,
-    password: str
+    password: str,
+    linkedin_id:str,
+    github_id:str,
 ):
 
     # Check whether email already exists
@@ -32,7 +34,9 @@ def register_user(
     new_user = User(
         name=name,
         email=email,
-        password=password
+        password=password,
+        linkedin_id=linkedin_id,
+        github_id=github_id
     )
 
 
