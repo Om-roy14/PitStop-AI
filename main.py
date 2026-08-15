@@ -13,7 +13,8 @@ from Backend.Databases.database import (
 
 from Backend.auth import (
     register_user,
-    login_user
+    login_user,
+    add_portfolio
 )
 
 # from Backend.agents.cold_mail_agent import get_cold_email
@@ -73,7 +74,13 @@ class LoginRequest(BaseModel):
 
     email: str
     password: str
+    
+class PortfolioRequest(BaseModel):
 
+    Project_id: int
+    Project_name: str
+    teck_stack: str
+    github_repo: str
 
 # =========================================
 # REGISTER
@@ -176,10 +183,34 @@ def login(
 
 
 # =========================================
-# COLD EMAIL
+# PORTFOLIO
 # =========================================
+@app.post("/portfolio")
+def add_project(
+    portfolio_data: PortfolioRequest,
+    db: Session = Depends(get_db)
+):
 
-# @app.get("/mail")
-# def get_data():
-#
-#     return get_cold_email()
+    port = add_portfolio(
+
+        db=db,
+
+        project_id=portfolio_data.Project_id,
+
+        project_name=portfolio_data.Project_name,
+
+        teck_stack=portfolio_data.teck_stack,
+
+        github_repo=portfolio_data.github_repo
+    )
+
+    return {
+        "message": "Portfolio added successfully",
+
+        "portfolio": {
+            "Project_id": port.Project_id,
+            "Project_name": port.Project_name,
+            "teck_stack": port.teck_stack,
+            "github_repo": port.github_repo
+        }
+    }

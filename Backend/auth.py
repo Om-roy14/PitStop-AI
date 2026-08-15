@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from Backend.Databases.models import User
+from Backend.Databases.models import User, Portfolio
 
 
 # =========================================
@@ -12,11 +12,9 @@ def register_user(
     name: str,
     email: str,
     password: str,
-    linkedin_id:str,
-    github_id:str,
+    linkedin_id: str,
+    github_id: str
 ):
-
-    # Check whether email already exists
 
     existing_user = (
         db.query(User)
@@ -25,11 +23,7 @@ def register_user(
     )
 
     if existing_user:
-
         return None
-
-
-    # Create user
 
     new_user = User(
         name=name,
@@ -39,13 +33,9 @@ def register_user(
         github_id=github_id
     )
 
-
     db.add(new_user)
-
     db.commit()
-
     db.refresh(new_user)
-
 
     return new_user
 
@@ -69,5 +59,36 @@ def login_user(
         .first()
     )
 
-
     return user
+
+
+# =========================================
+# ADD PORTFOLIO
+# =========================================
+
+def add_portfolio(
+    db: Session,
+    project_id: int,
+    project_name: str,
+    teck_stack: str,
+    github_repo: str
+):
+
+    new_portfolio = Portfolio(
+
+        Project_id=project_id,
+
+        Project_name=project_name,
+
+        teck_stack=teck_stack,
+
+        github_repo=github_repo
+    )
+
+    db.add(new_portfolio)
+
+    db.commit()
+
+    db.refresh(new_portfolio)
+
+    return new_portfolio
