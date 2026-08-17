@@ -117,3 +117,5 @@ logs/
 scraped_data/
 output/
 outputs/
+
+.hintrc
