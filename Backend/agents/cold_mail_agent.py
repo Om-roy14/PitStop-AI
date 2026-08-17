@@ -5,6 +5,9 @@ import groq
 import os
 from dotenv import load_dotenv
 import json
+from sqlalchemy.orm import Session
+from Backend.Databases.database import SessionLocal  # Import your SessionLocal
+
 
 client = OpenAI(
     api_key=os.getenv("COLD-EMAIL-API-KEY"),
@@ -13,9 +16,10 @@ client = OpenAI(
 
 name=input("ENTER YOUR NAME 👉")
 url=input("ENTER YOUR MAIL HERE 👉")
+db = SessionLocal()
 
 job_data=get_structured_data(url)
-portfolio_data=get_portfolio_data(job_data)
+portfolio_data=get_portfolio_data(job_data,db=db)
 
 
 SYSTEM_PROMPT = f"""
@@ -191,15 +195,17 @@ Best regards,
 
 def get_cold_email():
     response=client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": job_data}
         ]
     )
     result = response.choices[0].message.content.strip()
-    # print("\n\n")
-    # print( result)
-    return result
+    print("\n\n")
+    print( result)
+    # return result
     
     
+get_cold_email()
+#  python -m Backend.agents.cold_mail_agent   to run

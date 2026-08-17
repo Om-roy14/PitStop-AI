@@ -2,16 +2,16 @@ from langchain_community.document_loaders import WebBaseLoader
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
+from groq import Groq
 import json
 
 load_dotenv()
-
-client = OpenAI(
-    api_key=os.getenv("COLD-EMAIL-API-KEY"),
-    base_url="https://api.groq.com/openai/v1"
+api_key =os.getenv("GROQ_API_KEY")
+client = Groq(
+    api_key=api_key
 )
-
-
+# client = Groq(api_key=api_key)
+# url=input("here")
 def get_structured_data(url):
 
     loader = WebBaseLoader(url)
@@ -20,7 +20,7 @@ def get_structured_data(url):
     scraped_data = docs[0].page_content
 
     response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         messages=[
             {
                 "role": "system",

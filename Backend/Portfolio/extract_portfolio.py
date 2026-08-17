@@ -3,7 +3,8 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 from Backend.web_scraping.web_data import get_structured_data
-
+from Backend.Databases.models import Portfolio, User
+from sqlalchemy.orm import Session
 load_dotenv()
 
 client = OpenAI(
@@ -18,6 +19,26 @@ client = OpenAI(
 project_data = pd.read_excel(
     "D:/PitStop/Backend/Portfolio/Om_Roy_Projects.xlsx"
 )
+
+def get_user_portfolio_context(db: Session) -> str:
+  """Reads portfolio data from MySQL and formats it for the LLM."""
+  projects = db.query(Portfolio).all()
+
+  if not projects:
+    return "No projects currently listed."
+
+  # Format projects into structured text for the prompt
+  context_lines = []
+  for p in projects:
+    context_lines.append(
+        f"- Project: {p.Project_name} | Tech: {p.teck_stack} | Repo:"
+        f" {p.github_repo}"
+    )
+
+  return "\n".join(context_lines)
+
+
+
 
 SYSTEM_PROMPT = """
 You are an expert project-selection agent for a job application system.
@@ -88,9 +109,9 @@ If no relevant projects are found:
 """
 
 
-def get_portfolio_data(job_data):
+def get_portfolio_data(job_data,db:Session):
 
-    project_records = project_data.to_dict(orient="records")
+    project_records = get_user_portfolio_context(db)
 
     prompt = SYSTEM_PROMPT.format(
         job_data=job_data,
@@ -98,7 +119,7 @@ def get_portfolio_data(job_data):
     )
 
     response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         messages=[
             {
                 "role": "system",
