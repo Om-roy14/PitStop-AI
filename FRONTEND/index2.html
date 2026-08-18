@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PitStop AI - Cold Email Generator</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 sm:p-8 flex flex-col items-center justify-center font-sans antialiased">
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed top-5 right-5 z-50 transform transition-all duration-300 opacity-0 translate-y-[-20px] pointer-events-none px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-xs font-medium border bg-slate-900 border-slate-800 text-slate-200">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toastMsg">Notification</span>
+  </div>
+
+  <main class="w-full max-w-3xl bg-slate-900/90 border border-slate-800 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
+    
+    <!-- Header -->
+    <div class="px-6 py-5 border-b border-slate-800 flex items-center gap-3 bg-slate-950/40">
+      <div class="h-10 w-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-400 flex items-center justify-center text-lg">
+        <i class="fa-solid fa-robot"></i>
+      </div>
+      <div>
+        <h1 class="text-base font-bold text-white tracking-tight">AI Cold Email Agent</h1>
+        <p class="text-xs text-slate-400">Extracts job data, matches your portfolio, and crafts tailored pitches</p>
+      </div>
+    </div>
+
+    <!-- Input Form Area -->
+    <div class="p-6 border-b border-slate-800/80 bg-slate-900/40">
+      <form id="emailForm" onsubmit="generateColdEmail(event)" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          
+          <div class="sm:col-span-1">
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">
+              <i class="fa-solid fa-user text-indigo-400 mr-1"></i> Applicant Name
+            </label>
+            <input 
+              type="text" 
+              id="applicantName" 
+              required 
+              placeholder="e.g. Alex Mercer"
+              class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" 
+            />
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">
+              <i class="fa-solid fa-link text-indigo-400 mr-1"></i> Job Posting URL
+            </label>
+            <input 
+              type="url" 
+              id="jobUrl" 
+              required 
+              placeholder="https://boards.greenhouse.io/company/jobs/..." 
+              class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" 
+            />
+          </div>
+
+        </div>
+
+        <div class="flex items-center justify-between pt-1">
+          <span class="text-[11px] text-slate-500">
+            <i class="fa-solid fa-database mr-1"></i> Portfolio matched from your database
+          </span>
+          <button 
+            type="submit" 
+            id="submitBtn" 
+            class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition shadow-lg shadow-indigo-600/25 cursor-pointer">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>Generate Pitch</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Email Output Preview Area -->
+    <div class="p-6">
+      <div class="flex items-center justify-between mb-3 text-xs text-slate-400">
+        <span class="font-medium text-slate-300 flex items-center gap-1.5">
+          <i class="fa-solid fa-envelope-open-text text-indigo-400"></i> Generated Pitch
+        </span>
+        <div class="flex items-center gap-2">
+          <span id="wordCount" class="text-[11px] text-slate-500">0 words</span>
+          <button 
+            id="copyBtn" 
+            onclick="copyToClipboard()" 
+            disabled 
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700/80 transition active:scale-95 disabled:opacity-40 disabled:pointer-events-none cursor-pointer">
+            <i class="fa-regular fa-clone"></i>
+            <span>Copy Text</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Content Box -->
+      <div class="relative min-h-[220px] bg-slate-950 border border-slate-800 rounded-xl p-5">
+        
+        <!-- Loading State Spinner -->
+        <div id="emailLoader" class="hidden absolute inset-0 bg-slate-950/90 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center gap-3 z-10">
+          <div class="h-8 w-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+          <div class="text-center font-sans">
+            <p class="text-xs text-slate-200 font-medium">Analyzing job description & matching portfolio...</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">Running Groq LLM agent</p>
+          </div>
+        </div>
+
+        <!-- Initial Placeholder State -->
+        <div id="emptyState" class="h-[180px] flex flex-col items-center justify-center text-center">
+          <i class="fa-regular fa-paper-plane text-3xl text-slate-700 mb-2"></i>
+          <p class="text-xs font-medium text-slate-400">No pitch generated yet</p>
+          <p class="text-[11px] text-slate-600 mt-0.5">Provide a job posting URL and click "Generate Pitch" to start.</p>
+        </div>
+
+        <!-- Generated Output Box -->
+        <div id="emailOutput" class="hidden whitespace-pre-wrap font-sans text-xs text-slate-200 leading-relaxed select-text"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-6 py-3.5 bg-slate-950/70 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
+      <span>Endpoint: <code class="font-mono text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded text-[10px]">POST /email</code></span>
+      <span id="agentStatus" class="flex items-center gap-1.5">
+        <span class="h-2 w-2 rounded-full bg-slate-600"></span> Agent Idle
+      </span>
+    </div>
+
+  </main>
+
+  <script>
+    let generatedEmailText = "";
+
+    // Auto-fill name if user session exists in localStorage
+    window.addEventListener("DOMContentLoaded", () => {
+      const stored = localStorage.getItem("user");
+      if (stored) {
+        try {
+          const user = JSON.parse(stored);
+          if (user.name) document.getElementById("applicantName").value = user.name;
+        } catch (e) {}
+      }
+    });
+
+    function showToast(message, isSuccess = true) {
+      const toast = document.getElementById("toast");
+      const toastMsg = document.getElementById("toastMsg");
+      const toastIcon = document.getElementById("toastIcon");
+
+      toastMsg.textContent = message;
+      toastIcon.className = isSuccess 
+        ? "fa-solid fa-circle-check text-emerald-400" 
+        : "fa-solid fa-circle-exclamation text-rose-400";
+
+      toast.className = `fixed top-5 right-5 z-50 transform transition-all duration-300 opacity-100 translate-y-0 px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2.5 text-xs font-medium border ${
+        isSuccess ? "bg-slate-900 border-emerald-500/40 text-slate-100" : "bg-slate-900 border-rose-500/40 text-slate-100"
+      }`;
+
+      setTimeout(() => {
+        toast.className = toast.className.replace("opacity-100 translate-y-0", "opacity-0 translate-y-[-20px] pointer-events-none");
+      }, 3000);
+    }
+
+    async function generateColdEmail(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("applicantName").value.trim();
+      const url = document.getElementById("jobUrl").value.trim();
+      const loader = document.getElementById("emailLoader");
+      const emptyState = document.getElementById("emptyState");
+      const emailOutput = document.getElementById("emailOutput");
+      const copyBtn = document.getElementById("copyBtn");
+      const wordCount = document.getElementById("wordCount");
+      const submitBtn = document.getElementById("submitBtn");
+      const agentStatus = document.getElementById("agentStatus");
+
+      loader.classList.remove("hidden");
+      submitBtn.disabled = true;
+      submitBtn.classList.add("opacity-50", "pointer-events-none");
+      agentStatus.innerHTML = '<span class="h-2 w-2 rounded-full bg-amber-400 animate-ping"></span> Processing Agent...';
+
+      try {
+        const response = await fetch("/email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: name, url: url })
+        });
+
+        if (!response.ok) {
+          const errData = await response.json();
+          throw new Error(errData.detail || "Agent failed to generate email.");
+        }
+
+        const data = await response.json();
+        generatedEmailText = data.email;
+
+        // Render result
+        emptyState.classList.add("hidden");
+        emailOutput.classList.remove("hidden");
+        emailOutput.textContent = generatedEmailText;
+
+        // Calculate words & enable copy
+        copyBtn.removeAttribute("disabled");
+        const count = generatedEmailText.trim().split(/\s+/).filter(Boolean).length;
+        wordCount.textContent = `${count} words`;
+
+        agentStatus.innerHTML = '<span class="h-2 w-2 rounded-full bg-emerald-400"></span> Email Ready';
+        showToast("Email generated successfully!");
+      } catch (err) {
+        showToast(err.message, false);
+        agentStatus.innerHTML = '<span class="h-2 w-2 rounded-full bg-rose-400"></span> Generation Failed';
+      } finally {
+        loader.classList.add("hidden");
+        submitBtn.disabled = false;
+        submitBtn.classList.remove("opacity-50", "pointer-events-none");
+      }
+    }
+
+    async function copyToClipboard() {
+      if (!generatedEmailText) return;
+      try {
+        await navigator.clipboard.writeText(generatedEmailText);
+        showToast("Email copied to clipboard!");
+      } catch (err) {
+        showToast("Failed to copy", false);
+      }
+    }
+  </script>
+</body>
+</html>

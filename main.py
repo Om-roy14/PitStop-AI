@@ -7,6 +7,7 @@ from Backend.functions.portfolio_acccess import (
     update_portfolio,
 
 )
+from Backend.agents.cold_mail_agent import get_cold_email
 from Backend.auth import (
 
     login_user,
@@ -42,6 +43,9 @@ def home():
 @app.get("/dashboard")
 def portfolio_ui():
   return FileResponse("FRONTEND/index1.html")
+@app.get("/generator")
+def serve_page():
+    return FileResponse("FRONTEND/index2.html")
 
 
 # =========================================
@@ -81,9 +85,11 @@ class PortfolioResponse(BaseModel):
   teck_stack: str
   github_repo: str
 
-  # FIX: Required for reading SQLAlchemy ORM objects
   model_config = ConfigDict(from_attributes=True)
 
+class EmailRequest(BaseModel):
+    url: str
+    name: str
 
 # =========================================
 # REGISTER & LOGIN
@@ -245,3 +251,10 @@ def remove_portfolio(project_id: int, db: Session = Depends(get_db)):
       "message": f"Project with ID {project_id} deleted successfully",
       "deleted_id": project_id,
   }
+@app.post("/email")
+def generate_email(request: EmailRequest):
+    try:
+        email_data = get_cold_email(url=request.url, name=request.name)
+        return {"email": email_data}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

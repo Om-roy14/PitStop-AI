@@ -14,15 +14,11 @@ client = OpenAI(
     base_url="https://api.groq.com/openai/v1"
 )
 
-name=input("ENTER YOUR NAME 👉")
-url=input("ENTER YOUR MAIL HERE 👉")
-db = SessionLocal()
-
-job_data=get_structured_data(url)
-portfolio_data=get_portfolio_data(job_data,db=db)
 
 
-SYSTEM_PROMPT = f"""
+
+
+SYSTEM_PROMPT = """
 You are an expert cold-email generation agent.
 
 Your task is to write a highly personalized, professional, concise cold email
@@ -192,20 +188,30 @@ Sign-off:
 Best regards,
 {name}
 """
-
-def get_cold_email():
-    response=client.chat.completions.create(
-        model="openai/gpt-oss-120b",
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": job_data}
-        ]
-    )
-    result = response.choices[0].message.content.strip()
-    print("\n\n")
-    print( result)
-    # return result
+def get_cold_email(url:str,name:str):
+    db = SessionLocal()
+    try:
+            job_data = get_structured_data(url)
+            portfolio_data = get_portfolio_data(job_data, db=db)
+            
+            prompt = SYSTEM_PROMPT.format(
+                name=name,
+                job_data=job_data,
+                portfolio_data=portfolio_data
+            )
+            response=client.chat.completions.create(
+                    model="openai/gpt-oss-120b",
+                    messages=[
+                        {"role": "system", "content": SYSTEM_PROMPT},
+                        {"role": "user", "content": prompt}
+                    ]
+                )
+            result = response.choices[0].message.content.strip()
+                # print("\n\n")
+                # print( result)
+            return result
+    finally:
+        db.close()
     
-    
-get_cold_email()
+# get_cold_email()
 #  python -m Backend.agents.cold_mail_agent   to run
