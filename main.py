@@ -1,12 +1,16 @@
 from typing import List, Optional
-from Backend.auth import (
+from Backend.functions.portfolio_acccess import (
     add_portfolio,
     delete_portfolio,
     get_all_portfolios,
     get_portfolio_by_id,
+    update_portfolio,
+
+)
+from Backend.auth import (
+
     login_user,
     register_user,
-    update_portfolio,
 )
 from Backend.Databases.database import Base, engine, get_db
 from fastapi import Depends, FastAPI, HTTPException, status
