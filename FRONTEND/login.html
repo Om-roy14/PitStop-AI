@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/static/login.css">
+  <title>PitStop AI — Login</title>
+</head>
+<body>
+
+  <!-- ================= 1. LOGIN CARD ================= -->
+  <main class="ios-glass-card" id="loginCard">
+    <div class="header">
+      <h1>PitStop AI</h1>
+      <p class="subtitle">AI-powered cold email automation</p>
+    </div>
+
+    <form id="loginForm">
+      <div class="input-wrapper">
+        <input type="email" id="loginEmail" placeholder="Email Address" required />
+        <svg class="input-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </div>
+
+      <div class="input-wrapper">
+        <input type="password" id="loginPassword" placeholder="Password" required />
+        <svg class="input-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+      </div>
+
+      <button type="submit" class="submit-btn">Login</button>
+    </form>
+
+    <p id="loginMessage" class="message-box"></p>
+
+    <div class="footer-dock">
+      <span>Don't have an account?</span>
+      <!-- Directing to the signup page -->
+      <a href="/signup" class="dock-link">Register</a>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const msgBox = document.getElementById('loginMessage');
+      msgBox.style.color = '#97CADB';
+      msgBox.textContent = 'Authenticating...';
+
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || data.message || 'Invalid credentials');
+
+        // Save the authentication token (or user ID) for the dashboard to use
+        if (data.token) {
+          localStorage.setItem('access_token', data.token);
+        } else if (data.user) {
+          localStorage.setItem('user_email', data.user.email);
+        }
+
+        msgBox.style.color = '#D6E8EE';
+        msgBox.textContent = 'Login successful! Redirecting to dashboard...';
+        
+        // Wait 800ms so the user sees the success message, then redirect
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 800);
+
+      } catch (error) {
+        msgBox.style.color = '#FFA8A8';
+        msgBox.textContent = error.message;
+      }
+    });
+  </script>
+  <script src="/static/script.js"></script>
+</body>
+</html>

@@ -6,7 +6,7 @@ api_key=os.getenv("GROQ_API_KEY")
 
 client=Groq(api_key=api_key)
 
-query=input("Enter the name of the company for details 👉")
+# query=input("Enter the name of the company for details 👉")
 
 SYSTEM_PROMPT="""
 
@@ -86,14 +86,16 @@ Provide 3–4 high-leverage technical and architectural questions:
 
 """
 
-response=client.chat.completions.create(
+def info_company(name:str):
+  response=client.chat.completions.create(
     model="openai/gpt-oss-120b",
     messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": query}
+            {"role": "user", "content": f"Analyze and create an interview report for company: {name}"}
         ]
 )
 
 
-content = response.choices[0].message.content
-print(content)
+  content = response.choices[0].message.content
+  # print(content)
+  return content
