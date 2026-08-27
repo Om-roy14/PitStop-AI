@@ -10,9 +10,7 @@ from Backend.config import (
 
 from urllib.parse import quote_plus
 
-
 encoded_password = quote_plus(DB_PASSWORD)
-
 
 DATABASE_URL = (
     f"mysql+pymysql://"
@@ -20,12 +18,10 @@ DATABASE_URL = (
     f"@{DB_HOST}/{DB_NAME}"
 )
 
-
 engine = create_engine(
     DATABASE_URL,
     echo=False
 )
-
 
 SessionLocal = sessionmaker(
     autocommit=False,
@@ -33,18 +29,11 @@ SessionLocal = sessionmaker(
     bind=engine
 )
 
-
 Base = declarative_base()
 
-
 def get_db():
-
     db = SessionLocal()
-
     try:
-
         yield db
-
     finally:
-
         db.close()

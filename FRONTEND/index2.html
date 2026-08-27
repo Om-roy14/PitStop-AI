@@ -7,421 +7,101 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
-      /* Blue Palette Theme */
-      --c-navy-dark: #001B48;
+      var(--c-navy-dark): #001B48;
       --c-ocean-deep: #02457A;
       --c-azure-mid: #018ABE;
       --c-sky-soft: #97CADB;
       --c-ice-light: #D6E8EE;
 
-      /* iOS Ultra-Clear Refractive Glass System */
       --ios-blur: blur(8px) saturate(140%);
       --glass-card-bg: rgba(214, 232, 238, 0.08);
-      --glass-panel-bg: rgba(0, 15, 40, 0.35); /* Darker inset for output box */
+      --glass-panel-bg: rgba(0, 15, 40, 0.35); 
       --glass-pill-bg: rgba(255, 255, 255, 0.12);
       --glass-pill-focus: rgba(255, 255, 255, 0.28);
       --glass-border: rgba(255, 255, 255, 0.4);
-      --glass-specular: 
-        inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.7), 
-        inset 0 -1.5px 2px 0 rgba(0, 27, 72, 0.35);
+      --glass-specular: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.7), inset 0 -1.5px 2px 0 rgba(0, 27, 72, 0.35);
       --glass-shadow: 0 30px 60px -12px rgba(0, 15, 40, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
       --ios-spring: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; -webkit-font-smoothing: antialiased; }
 
     body {
-      min-height: 100vh;
-      width: 100vw;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background-color: var(--c-navy-dark);
-      background-image: url('/static/bg7.jpg');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
+      min-height: 100vh; width: 100vw; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px;
+      background-color: #001B48; background-image: url('/static/bg7.jpg'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;
     }
 
-    .hidden {
-      display: none !important;
-    }
+    .hidden { display: none !important; }
 
-    /* iOS Clear Window Shell */
     .ios-glass-card {
-      width: 100%;
-      max-width: 760px;
-      background: var(--glass-card-bg);
-      backdrop-filter: var(--ios-blur);
-      -webkit-backdrop-filter: var(--ios-blur);
-      border: 1.5px solid var(--glass-border);
-      box-shadow: var(--glass-specular), var(--glass-shadow);
-      border-radius: 32px;
-      color: var(--c-ice-light);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      width: 100%; max-width: 760px; background: var(--glass-card-bg); backdrop-filter: var(--ios-blur); -webkit-backdrop-filter: var(--ios-blur);
+      border: 1.5px solid var(--glass-border); box-shadow: var(--glass-specular), var(--glass-shadow); border-radius: 32px; color: var(--c-ice-light); overflow: hidden; display: flex; flex-direction: column;
     }
 
-    /* Header */
-    .header {
-      padding: 24px 32px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-      background: rgba(0, 27, 72, 0.2);
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
+    .header { padding: 24px 32px; border-bottom: 1px solid rgba(255, 255, 255, 0.15); background: rgba(0, 27, 72, 0.2); display: flex; align-items: center; gap: 16px; }
+    .icon-box { width: 44px; height: 44px; border-radius: 12px; background: var(--glass-pill-bg); border: 1px solid var(--glass-border); box-shadow: inset 0 1px 1px rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--c-sky-soft); }
+    .header-text h1 { font-size: 1.25rem; font-weight: 700; color: #ffffff; margin-bottom: 2px; }
+    .header-text p { font-size: 0.82rem; color: var(--c-sky-soft); font-weight: 500; }
 
-    .icon-box {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: var(--glass-pill-bg);
-      border: 1px solid var(--glass-border);
-      box-shadow: inset 0 1px 1px rgba(255,255,255,0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      color: var(--c-sky-soft);
-    }
+    .form-section { padding: 28px 32px; border-bottom: 1px solid rgba(255, 255, 255, 0.15); }
+    .input-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 20px; }
+    .input-wrapper { display: flex; flex-direction: column; gap: 8px; }
+    .input-wrapper label { font-size: 0.82rem; font-weight: 600; color: var(--c-ice-light); display: flex; align-items: center; gap: 6px; }
+    .input-field { width: 100%; height: 48px; background: var(--glass-pill-bg); border: 1px solid var(--glass-border); box-shadow: inset 0 1px 1.5px rgba(255, 255, 255, 0.4); border-radius: 16px; padding: 0 16px; color: #ffffff; font-size: 0.92rem; outline: none; transition: all 0.3s var(--ios-spring); }
+    .input-field::placeholder { color: rgba(255, 255, 255, 0.5); }
+    .input-field:focus { background: var(--glass-pill-focus); border-color: rgba(255, 255, 255, 0.9); box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.8), 0 0 0 4px rgba(151, 202, 219, 0.25); }
 
-    .header-text h1 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 2px;
-      letter-spacing: -0.01em;
-    }
+    .form-actions { display: flex; justify-content: space-between; align-items: center; }
+    .db-hint { font-size: 0.75rem; color: var(--c-sky-soft); display: flex; align-items: center; gap: 6px; }
+    .submit-btn { display: flex; align-items: center; gap: 8px; background: var(--c-ice-light); color: #001B48; border: none; border-radius: 9999px; padding: 10px 24px; font-size: 0.88rem; font-weight: 700; cursor: pointer; box-shadow: 0 10px 24px rgba(0, 20, 50, 0.35), inset 0 1px 1.5px rgba(255, 255, 255, 0.9); transition: all 0.25s var(--ios-spring); }
+    .submit-btn:hover:not(:disabled) { background: #ffffff; transform: scale(1.03); }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .header-text p {
-      font-size: 0.82rem;
-      color: var(--c-sky-soft);
-      font-weight: 500;
-    }
+    .output-section { padding: 28px 32px; }
+    .output-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .output-title { font-size: 0.88rem; font-weight: 600; color: #ffffff; display: flex; align-items: center; gap: 8px; }
+    .output-actions { display: flex; align-items: center; gap: 12px; }
+    .word-count { font-size: 0.75rem; color: var(--c-sky-soft); }
+    .copy-btn { display: flex; align-items: center; gap: 6px; background: var(--glass-pill-bg); border: 1px solid rgba(255, 255, 255, 0.2); color: #ffffff; padding: 6px 14px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .copy-btn:hover:not(:disabled) { background: var(--glass-pill-focus); border-color: rgba(255, 255, 255, 0.5); }
+    .copy-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    /* Form Section */
-    .form-section {
-      padding: 28px 32px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    }
+    .glass-panel { position: relative; background: var(--glass-panel-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.3); min-height: 240px; padding: 24px; overflow: hidden; }
+    .empty-state { height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: rgba(255, 255, 255, 0.4); }
+    .empty-state i { font-size: 2.2rem; margin-bottom: 12px; }
+    .empty-state p { font-size: 0.85rem; font-weight: 500; }
+    .email-output { font-family: -apple-system, system-ui, sans-serif; font-size: 0.9rem; line-height: 1.6; color: #ffffff; white-space: pre-wrap; user-select: text; max-height: 400px; overflow-y: auto; }
 
-    .input-grid {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .input-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .input-wrapper label {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--c-ice-light);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .input-field {
-      width: 100%;
-      height: 48px;
-      background: var(--glass-pill-bg);
-      border: 1px solid var(--glass-border);
-      box-shadow: inset 0 1px 1.5px rgba(255, 255, 255, 0.4);
-      border-radius: 16px;
-      padding: 0 16px;
-      color: #ffffff;
-      font-size: 0.92rem;
-      outline: none;
-      transition: all 0.3s var(--ios-spring);
-    }
-
-    .input-field::placeholder {
-      color: rgba(255, 255, 255, 0.5);
-    }
-
-    .input-field:focus {
-      background: var(--glass-pill-focus);
-      border-color: rgba(255, 255, 255, 0.9);
-      box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.8), 0 0 0 4px rgba(151, 202, 219, 0.25);
-    }
-
-    .form-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .db-hint {
-      font-size: 0.75rem;
-      color: var(--c-sky-soft);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .submit-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--c-ice-light);
-      color: var(--c-navy-dark);
-      border: none;
-      border-radius: 9999px;
-      padding: 10px 24px;
-      font-size: 0.88rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 10px 24px rgba(0, 20, 50, 0.35), inset 0 1px 1.5px rgba(255, 255, 255, 0.9);
-      transition: all 0.25s var(--ios-spring);
-    }
-
-    .submit-btn:hover:not(:disabled) {
-      background: #ffffff;
-      transform: scale(1.03);
-    }
-
-    .submit-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    /* Output Section */
-    .output-section {
-      padding: 28px 32px;
-    }
-
-    .output-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .output-title {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .output-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .word-count {
-      font-size: 0.75rem;
-      color: var(--c-sky-soft);
-    }
-
-    .copy-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--glass-pill-bg);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      padding: 6px 14px;
-      border-radius: 9999px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .copy-btn:hover:not(:disabled) {
-      background: var(--glass-pill-focus);
-      border-color: rgba(255, 255, 255, 0.5);
-    }
-    
-    .copy-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    /* The Glass Text Area */
-    .glass-panel {
-      position: relative;
-      background: var(--glass-panel-bg);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.3);
-      min-height: 240px;
-      padding: 24px;
-      overflow: hidden;
-    }
-
-    /* Empty State */
-    .empty-state {
-      height: 190px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: rgba(255, 255, 255, 0.4);
-    }
-
-    .empty-state i {
-      font-size: 2.2rem;
-      margin-bottom: 12px;
-    }
-
-    .empty-state p {
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-
-    .empty-state span {
-      font-size: 0.75rem;
-      margin-top: 4px;
-    }
-
-    /* Output Text */
-    .email-output {
-      font-family: -apple-system, system-ui, sans-serif;
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: #ffffff;
-      white-space: pre-wrap;
-      user-select: text;
-      max-height: 400px;
-      overflow-y: auto;
-    }
-
-    /* Loader */
-    .loader-overlay {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 15, 40, 0.6);
-      backdrop-filter: blur(4px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      z-index: 10;
-    }
-
-    .spinner {
-      width: 36px;
-      height: 36px;
-      border: 3px solid rgba(255, 255, 255, 0.2);
-      border-top-color: var(--c-sky-soft);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
+    .loader-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 15, 40, 0.6); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; z-index: 10; }
+    .spinner { width: 36px; height: 36px; border: 3px solid rgba(255, 255, 255, 0.2); border-top-color: var(--c-sky-soft); border-radius: 50%; animation: spin 1s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .loader-overlay p { font-size: 0.85rem; font-weight: 600; color: #ffffff; }
 
-    .loader-overlay p {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #ffffff;
-    }
+    .card-footer { padding: 12px 32px; background: rgba(0, 15, 40, 0.3); display: flex; justify-content: space-between; font-size: 0.7rem; color: rgba(255, 255, 255, 0.5); border-top: 1px solid rgba(255, 255, 255, 0.1); }
+    .status-indicator { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); }
 
-    .loader-overlay span {
-      font-size: 0.75rem;
-      color: var(--c-sky-soft);
-    }
-
-    /* Footer Status */
-    .card-footer {
-      padding: 12px 32px;
-      background: rgba(0, 15, 40, 0.3);
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.7rem;
-      color: rgba(255, 255, 255, 0.5);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .status-indicator {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    /* Custom Toast Notification */
-    .toast {
-      position: fixed;
-      top: 24px;
-      right: 24px;
-      z-index: 9999;
-      background: var(--glass-card-bg);
-      backdrop-filter: var(--ios-blur);
-      border: 1px solid var(--glass-border);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      padding: 12px 20px;
-      border-radius: 9999px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #fff;
-      transform: translateY(-20px);
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s var(--ios-spring);
-    }
-
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    .toast i { font-size: 1rem; }
+    .toast { position: fixed; top: 24px; right: 24px; z-index: 9999; background: var(--glass-card-bg); backdrop-filter: var(--ios-blur); border: 1px solid var(--glass-border); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); padding: 12px 20px; border-radius: 9999px; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 600; color: #fff; transform: translateY(-20px); opacity: 0; pointer-events: none; transition: all 0.3s var(--ios-spring); }
+    .toast.show { transform: translateY(0); opacity: 1; }
     .toast.success { border-color: rgba(52, 211, 153, 0.6); }
     .toast.success i { color: #34D399; }
     .toast.error { border-color: rgba(251, 113, 133, 0.6); }
     .toast.error i { color: #FB7185; }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      .input-grid { grid-template-columns: 1fr; }
-      .header, .form-section, .output-section { padding: 20px; }
-      .card-footer { padding: 12px 20px; }
-    }
+    
+    .nav-btn { position: absolute; top: 20px; left: 20px; background: var(--glass-pill-bg); border: 1px solid var(--glass-border); color: #fff; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-size: 0.85rem; transition: 0.3s; }
+    .nav-btn:hover { background: var(--glass-pill-focus); }
   </style>
 </head>
 <body>
 
-  <!-- Toast Notification -->
+  <a href="/dashboard" class="nav-btn"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+
   <div id="toast" class="toast">
     <i id="toastIcon" class="fa-solid fa-circle-check"></i>
     <span id="toastMsg">Notification</span>
   </div>
 
   <main class="ios-glass-card">
-    
-    <!-- Header -->
     <div class="header">
       <div class="icon-box">
         <i class="fa-solid fa-robot"></i>
@@ -432,37 +112,27 @@
       </div>
     </div>
 
-    <!-- Input Form Area -->
     <div class="form-section">
       <form id="emailForm" onsubmit="generateColdEmail(event)">
-        
         <div class="input-grid">
           <div class="input-wrapper">
-            <label for="applicantName"><i class="fa-solid fa-user"></i> Applicant Name</label>
-            <input type="text" id="applicantName" class="input-field" required placeholder="e.g. Alex Mercer" />
-          </div>
-
-          <div class="input-wrapper">
-            <label for="jobUrl"><i class="fa-solid fa-link"></i> Job Posting URL</label>
-            <input type="url" id="jobUrl" class="input-field" required placeholder="https://boards.greenhouse.io/..." />
+            <label for="jobUrl"><i class="fa-solid fa-link"></i> Target Company URL</label>
+            <input type="url" id="jobUrl" class="input-field" required placeholder="https://example.com/careers" />
           </div>
         </div>
 
         <div class="form-actions">
           <div class="db-hint">
-            <i class="fa-solid fa-database"></i> Portfolio matched automatically
+            <i class="fa-solid fa-database"></i> Portfolio & Name matched automatically via ID
           </div>
           <button type="submit" id="submitBtn" class="submit-btn">
             <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Pitch
           </button>
         </div>
-
       </form>
     </div>
 
-    <!-- Email Output Preview Area -->
     <div class="output-section">
-      
       <div class="output-header">
         <div class="output-title">
           <i class="fa-solid fa-envelope-open-text" style="color: var(--c-sky-soft);"></i> Generated Pitch
@@ -470,39 +140,36 @@
         <div class="output-actions">
           <span id="wordCount" class="word-count">0 words</span>
           <button id="copyBtn" onclick="copyToClipboard()" disabled class="copy-btn">
-            <i class="fa-regular fa-clone"></i> Copy Text
+            <i class="fa-regular fa-clone"></i> Copy
+          </button>
+          <!-- Added Send Button perfectly matching the existing UI -->
+          <button id="sendBtn" class="copy-btn hidden" style="background: rgba(2, 69, 122, 0.8);">
+            <i class="fa-solid fa-paper-plane"></i> Send Email
           </button>
         </div>
       </div>
 
-      <!-- Content Box -->
       <div class="glass-panel">
-        
-        <!-- Loading State -->
         <div id="emailLoader" class="loader-overlay hidden">
           <div class="spinner"></div>
           <div>
-            <p>Analyzing job description...</p>
+            <p>Analyzing company and portfolio...</p>
             <span>Running PitStop Neural Core</span>
           </div>
         </div>
 
-        <!-- Initial Placeholder State -->
         <div id="emptyState" class="empty-state">
           <i class="fa-regular fa-paper-plane"></i>
           <p>No pitch generated yet</p>
-          <span>Provide a job URL and click Generate to start.</span>
+          <span>Provide a target URL and click Generate to start.</span>
         </div>
 
-        <!-- Generated Output Box -->
         <div id="emailOutput" class="email-output hidden"></div>
       </div>
-
     </div>
 
-    <!-- Footer -->
     <div class="card-footer">
-      <span>Endpoint: POST /email</span>
+      <span>Secure Token Encrypted</span>
       <div id="agentStatus" class="status-indicator">
         <div class="dot"></div> Agent Idle
       </div>
@@ -510,81 +177,55 @@
 
   </main>
 
+  <script src="/FRONTEND/auth.js"></script>
   <script>
+    Auth.protectPage();
     let generatedEmailText = "";
+    let currentLogId = null;
 
-    // Auto-fill name if user session exists in localStorage
-    window.addEventListener("DOMContentLoaded", () => {
-      // You can also grab user_name if you set it during login
-      const storedName = localStorage.getItem("user_name"); 
-      if (storedName) {
-        document.getElementById("applicantName").value = storedName;
-      }
-    });
-
-    // Custom Toast Logic
     function showToast(message, isSuccess = true) {
       const toast = document.getElementById("toast");
-      const toastMsg = document.getElementById("toastMsg");
-      const toastIcon = document.getElementById("toastIcon");
-
-      toastMsg.textContent = message;
+      document.getElementById("toastMsg").textContent = message;
       toast.className = `toast show ${isSuccess ? 'success' : 'error'}`;
-      toastIcon.className = isSuccess ? "fa-solid fa-circle-check" : "fa-solid fa-circle-exclamation";
-
-      setTimeout(() => {
-        toast.classList.remove("show");
-      }, 3000);
+      document.getElementById("toastIcon").className = isSuccess ? "fa-solid fa-circle-check" : "fa-solid fa-circle-exclamation";
+      setTimeout(() => toast.classList.remove("show"), 3000);
     }
 
     async function generateColdEmail(e) {
       e.preventDefault();
-
-      const name = document.getElementById("applicantName").value.trim();
       const url = document.getElementById("jobUrl").value.trim();
-      
       const loader = document.getElementById("emailLoader");
-      const emptyState = document.getElementById("emptyState");
-      const emailOutput = document.getElementById("emailOutput");
-      const copyBtn = document.getElementById("copyBtn");
-      const wordCount = document.getElementById("wordCount");
       const submitBtn = document.getElementById("submitBtn");
       const agentStatus = document.getElementById("agentStatus");
-      const dot = agentStatus.querySelector('.dot');
 
-      // Show Loader & Disable Button
       loader.classList.remove("hidden");
       submitBtn.disabled = true;
-      agentStatus.innerHTML = '<div class="dot" style="background: #FBBF24; animation: blink 1s infinite;"></div> Processing...';
+      agentStatus.innerHTML = '<div class="dot" style="background: #FBBF24;"></div> Processing...';
 
       try {
-        const response = await fetch("/email", {
+        const response = await Auth.fetch("/api/email/generate", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: name, url: url })
+          body: JSON.stringify({ url: url })
         });
 
-        if (!response.ok) {
-          const errData = await response.json();
-          throw new Error(errData.detail || "Agent failed to generate email.");
-        }
+        if (!response.ok) throw new Error("Agent failed to generate email.");
 
         const data = await response.json();
-        generatedEmailText = data.email;
+        generatedEmailText = data.content;
+        currentLogId = data.log_id;
 
-        // Render result
-        emptyState.classList.add("hidden");
-        emailOutput.classList.remove("hidden");
-        emailOutput.textContent = generatedEmailText;
+        document.getElementById("emptyState").classList.add("hidden");
+        document.getElementById("emailOutput").classList.remove("hidden");
+        document.getElementById("emailOutput").textContent = generatedEmailText;
+        
+        document.getElementById("copyBtn").removeAttribute("disabled");
+        document.getElementById("sendBtn").classList.remove("hidden");
 
-        // Calculate words & enable copy
-        copyBtn.removeAttribute("disabled");
         const count = generatedEmailText.trim().split(/\s+/).filter(Boolean).length;
-        wordCount.textContent = `${count} words`;
+        document.getElementById("wordCount").textContent = `${count} words`;
 
         agentStatus.innerHTML = '<div class="dot" style="background: #34D399;"></div> Email Ready';
         showToast("Email generated successfully!");
-        
       } catch (err) {
         showToast(err.message, false);
         agentStatus.innerHTML = '<div class="dot" style="background: #FB7185;"></div> Failed';
@@ -593,6 +234,33 @@
         submitBtn.disabled = false;
       }
     }
+
+    document.getElementById("sendBtn").addEventListener("click", async () => {
+        const recipient = prompt("Enter the target recipient's email address:");
+        if (!recipient) return;
+
+        const originalHtml = document.getElementById("sendBtn").innerHTML;
+        document.getElementById("sendBtn").innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+        
+        try {
+            const response = await Auth.fetch('/api/email/send', {
+                method: 'POST',
+                body: JSON.stringify({ log_id: currentLogId, recipient_email: recipient })
+            });
+
+            if (response.ok) {
+                showToast("Email dispatched successfully!");
+                document.getElementById("sendBtn").classList.add("hidden"); // hide after success
+            } else {
+                const err = await response.json();
+                showToast(err.detail || "Failed to send email.", false);
+            }
+        } catch (err) {
+            showToast("Connection error", false);
+        } finally {
+            document.getElementById("sendBtn").innerHTML = originalHtml;
+        }
+    });
 
     async function copyToClipboard() {
       if (!generatedEmailText) return;

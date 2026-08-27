@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PitStop - AI Company Research</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/com.css">
+</head>
+<body>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    
+    <div class="dashboard-container">
+        <!-- SIDEBAR -->
+        <nav class="sidebar glass-panel" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+                <h1 class="logo-text">PitStop</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/dashboard" class="nav-item"><i class="fa-solid fa-house"></i><span>Dashboard</span></a></li>
+                <li><a href="/generator" class="nav-item"><i class="fa-regular fa-envelope"></i><span>Cold Email</span></a></li>
+                <li><a href="/portfolio_store" class="nav-item"><i class="fa-regular fa-folder-open"></i><span>Portfolio</span></a></li>
+                <li><a href="/company" class="nav-item active"><i class="fa-regular fa-building"></i><span>Company Research</span></a></li>
+            </ul>
+            <div class="sidebar-spacer"></div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-item" id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <header class="top-header glass-panel">
+                <div class="header-titles">
+                    <span class="header-label">AI Company Research</span>
+                    <h2 class="header-heading">Research any company</h2>
+                    <p class="header-subtitle">Get structured company intelligence before you reach out.</p>
+                </div>
+            </header>
+
+            <div id="views-container">
+                <div id="view-company-research" class="view-section active">
+                    
+                    <!-- SEARCH CARD -->
+                    <div class="search-card glass-panel">
+                        <div class="search-card-header">
+                            <h3>Company Intelligence</h3>
+                            <p>Enter a company name and let PitStop gather relevant intelligence.</p>
+                        </div>
+                        <form id="research-form" class="search-form">
+                            <div class="input-group">
+                                <i class="fa-regular fa-building input-icon"></i>
+                                <input type="text" id="company-input" placeholder="Enter company name..." autocomplete="off" required>
+                            </div>
+                            <button type="submit" id="research-btn" class="primary-btn">
+                                <span>Research Company</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- STATES -->
+                    <div id="state-container">
+                        <!-- EMPTY -->
+                        <div id="empty-state" class="state-view active glass-panel">
+                            <div class="state-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                            <h3>Ready to research</h3>
+                            <p>Enter a company name above to generate a detailed company intelligence report.</p>
+                        </div>
+
+                        <!-- LOADING -->
+                        <div id="loading-state" class="state-view glass-panel">
+                            <div class="spinner"></div>
+                            <h3>Researching company...</h3>
+                            <p id="loading-text">Gathering relevant data</p>
+                        </div>
+
+                        <!-- RESULT -->
+                        <div id="result-state" class="state-view">
+                            <div class="result-header">
+                                <div class="result-title-group">
+                                    <h3 id="display-company-name">Company Name</h3>
+                                    <span class="status-badge success"><i class="fa-solid fa-check"></i> Research Complete</span>
+                                </div>
+                                <div class="result-actions">
+                                    <button id="new-research-btn" class="secondary-btn"><i class="fa-solid fa-rotate-right"></i> New Research</button>
+                                </div>
+                            </div>
+
+                            <div class="results-grid">
+                                <div class="report-card glass-panel">
+                                    <div id="report-content" class="report-text"></div>
+                                </div>
+                                <div class="stats-column">
+                                    <div class="stat-card glass-panel">
+                                        <div class="stat-details">
+                                            <span class="stat-label">Company</span>
+                                            <span class="stat-value" id="stat-company">--</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card glass-panel">
+                                        <div class="stat-details">
+                                            <span class="stat-label">Status</span>
+                                            <span class="stat-value" id="stat-status">Completed</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card glass-panel">
+                                        <div class="stat-details">
+                                            <span class="stat-label">Report Size</span>
+                                            <span class="stat-value" id="stat-size">--</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="/FRONTEND/auth.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        Auth.protectPage();
+
+        const logoutBtn = document.getElementById('logout-btn');
+        const researchForm = document.getElementById('research-form');
+        const companyInput = document.getElementById('company-input');
+        const researchBtn = document.getElementById('research-btn');
+        const emptyState = document.getElementById('empty-state');
+        const loadingState = document.getElementById('loading-state');
+        const resultState = document.getElementById('result-state');
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => { e.preventDefault(); Auth.logout(); });
+        }
+
+        function showState(state) {
+            if(emptyState) emptyState.classList.remove('active');
+            if(loadingState) loadingState.classList.remove('active');
+            if(resultState) resultState.classList.remove('active');
+            if (state === 'empty' && emptyState) emptyState.classList.add('active');
+            if (state === 'loading' && loadingState) loadingState.classList.add('active');
+            if (state === 'result' && resultState) resultState.classList.add('active');
+        }
+
+        async function researchCompany(event) {
+            event.preventDefault();
+            const companyName = companyInput.value.trim();
+            if (!companyName) return;
+
+            showState('loading');
+            if(researchBtn) researchBtn.disabled = true;
+            if(companyInput) companyInput.disabled = true;
+
+            try {
+                const response = await Auth.fetch('/info', {
+                    method: 'POST',
+                    body: JSON.stringify({ name: companyName })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Research failed.');
+                }
+
+                const data = await response.json();
+                if (data && data.report) {
+                    document.getElementById('display-company-name').innerText = companyName;
+                    document.getElementById('report-content').innerText = data.report;
+                    document.getElementById('stat-company').innerText = companyName;
+                    document.getElementById('stat-status').innerText = 'Completed';
+                    document.getElementById('stat-size').innerText = `${data.report.length} chars`;
+                    showState('result');
+                }
+            } catch (error) {
+                console.error('Research Error:', error);
+                alert(error.message);
+                showState('empty');
+            } finally {
+                if(researchBtn) researchBtn.disabled = false;
+                if(companyInput) companyInput.disabled = false;
+            }
+        }
+
+        if(researchForm) researchForm.addEventListener('submit', researchCompany);
+        const newResBtn = document.getElementById('new-research-btn');
+        if(newResBtn) {
+            newResBtn.addEventListener('click', () => {
+                companyInput.value = '';
+                showState('empty');
+            });
+        }
+    });
+    </script>
+</body>
+</html>

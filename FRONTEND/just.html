@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PitStop AI - Career Workspace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="/static/dashboard1.css">
+</head>
+<body>
+    <div class="bg-glow top-left"></div>
+    <div class="bg-glow bottom-right"></div>
+
+    <div class="app-container">
+        <nav class="top-nav glass-panel">
+            <div class="nav-left cursor-pointer" data-route="/dashboard">
+                <div class="logo-icon">
+                    <i class="ph-fill ph-paper-plane-tilt"></i>
+                </div>
+                <div class="nav-brand">
+                    <h1 class="logo-text">PITSTOP AI</h1>
+                    <span class="logo-subtitle">AI Career Workspace</span>
+                </div>
+            </div>
+            
+            <div class="nav-right">
+                <div class="nav-icon cursor-pointer" id="logout-btn" title="Logout">
+                    <i class="ph ph-sign-out"></i>
+                </div>
+                <div class="user-avatar">
+                    <img id="nav-avatar" src="https://ui-avatars.com/api/?name=User&background=02457A&color=fff" alt="User Profile">
+                </div>
+            </div>
+        </nav>
+
+        <header class="hero-section">
+            <div class="hero-content">
+                <div class="hero-label">
+                    <span class="status-dot"></span> AI Workspace Active
+                </div>
+                <h2 class="hero-title" id="welcome-title">Welcome back</h2>
+                <p class="hero-subtitle">Turn opportunities into personalized outreach with AI.</p>
+            </div>
+        </header>
+
+        <section class="primary-features grid-layout">
+            <div class="feature-card dark-card" data-route="/generator">
+                <div class="card-icon dark-icon">
+                    <i class="ph ph-envelope-simple"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Cold Email</h3>
+                    <p class="card-description">Generate personalized AI-powered outreach.</p>
+                </div>
+                <button class="primary-btn dark-btn" data-route="/generator">
+                    Generate Email <i class="ph ph-arrow-right"></i>
+                </button>
+                <div class="card-bg-decoration">
+                    <i class="ph-fill ph-paper-plane-right"></i>
+                </div>
+            </div>
+
+            <div class="feature-card light-card" data-route="/portfolio_store">
+                <div class="card-icon light-icon">
+                    <i class="ph ph-folder-notch"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Portfolio</h3>
+                    <p class="card-description">Manage and organize your projects.</p>
+                </div>
+                <button class="primary-btn light-btn" data-route="/portfolio_store">
+                    Manage Portfolio <i class="ph ph-arrow-right"></i>
+                </button>
+            </div>
+
+            <div class="feature-card light-card accent-border" data-route="/company">
+                <div class="card-icon accent-icon">
+                    <i class="ph ph-buildings"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Company Research</h3>
+                    <p class="card-description">Research companies before reaching out.</p>
+                </div>
+                <button class="primary-btn light-btn" data-route="/company">
+                    Research Company <i class="ph ph-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <section class="statistics-grid">
+            <div class="stat-card glass-panel" id="stat-emails"></div>
+            <div class="stat-card glass-panel" id="stat-companies"></div>
+            <div class="stat-card glass-panel" id="stat-jobs"></div>
+        </section>
+
+        <section class="lower-content grid-layout">
+            <div class="todo-container glass-panel">
+                <div class="section-header">
+                    <h3>Todo List</h3>
+                    <div class="progress-badge" id="todo-progress">0/0</div>
+                </div>
+                
+                <div class="todo-input-wrapper">
+                    <input type="text" id="todo-input" placeholder="What needs to be done?">
+                    <button id="add-todo-btn" class="icon-btn">
+                        <i class="ph-bold ph-plus"></i>
+                    </button>
+                </div>
+
+                <ul class="todo-list" id="todo-list"></ul>
+            </div>
+
+            <div class="activity-container glass-panel">
+                <div class="section-header">
+                    <h3>Recent Activity</h3>
+                </div>
+                
+                <div class="activity-timeline" id="activity-timeline">
+                    <!-- Activities go here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Auth Script injected -->
+    <script src="/FRONTEND/auth.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Enforce Authentication
+        Auth.protectPage();
+
+        document.getElementById('logout-btn').addEventListener('click', Auth.logout);
+
+        // Fetch User Stats dynamically
+        try {
+            const response = await Auth.fetch('/api/dashboard/stats');
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('welcome-title').innerText = `Welcome back, ${data.user_name}`;
+                document.getElementById('nav-avatar').src = `https://ui-avatars.com/api/?name=${data.user_name}&background=02457A&color=fff`;
+
+                const statsData = [
+                    {
+                        id: 'stat-emails',
+                        value: data.total_emails_sent,
+                        label: 'Total Emails Sent',
+                        sub: 'Outreach messages dispatched',
+                        icon: 'ph-paper-plane-tilt'
+                    },
+                    {
+                        id: 'stat-companies',
+                        value: data.total_companies_checked,
+                        label: 'Total Companies Checked',
+                        sub: 'Companies researched',
+                        icon: 'ph-buildings'
+                    },
+                    {
+                        id: 'stat-jobs',
+                        value: 'Active',
+                        label: 'Authentication',
+                        sub: 'Session securely verified',
+                        icon: 'ph-shield-check'
+                    }
+                ];
+
+                statsData.forEach(stat => {
+                    const container = document.getElementById(stat.id);
+                    if(container) {
+                        container.innerHTML = `
+                            <div class="stat-icon-wrapper">
+                                <i class="ph ${stat.icon}"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-value">${stat.value}</span>
+                                <span class="stat-label">${stat.label}</span>
+                                <span class="stat-sub">${stat.sub}</span>
+                            </div>
+                        `;
+                    }
+                });
+            }
+        } catch (error) {
+            console.error("Failed to fetch stats", error);
+        }
+
+        // Handle Routing Simulation
+        function navigateTo(route) {
+            if(route === '/dashboard') return;
+            window.location.href = route;
+        }
+
+        const routeElements = document.querySelectorAll('[data-route]');
+        routeElements.forEach(el => {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                navigateTo(el.getAttribute('data-route'));
+            });
+        });
+
+        // Basic Todo Implementation
+        let todos = [{ id: 1, text: 'Review PitStop AI dashboard', completed: false }];
+        const todoList = document.getElementById('todo-list');
+        const todoInput = document.getElementById('todo-input');
+        
+        function renderTodos() {
+            const completedCount = todos.filter(t => t.completed).length;
+            document.getElementById('todo-progress').textContent = `${completedCount}/${todos.length}`;
+            todoList.innerHTML = todos.map(todo => `
+                <li class="todo-item ${todo.completed ? 'completed' : ''}" data-id="${todo.id}">
+                    <div class="todo-item-left">
+                        <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo(${todo.id})">
+                        <span class="todo-text">${todo.text}</span>
+                    </div>
+                    <button class="delete-btn" onclick="deleteTodo(${todo.id})"><i class="ph ph-trash"></i></button>
+                </li>
+            `).join('');
+        }
+
+        function addTodo() {
+            if (todoInput.value.trim()) {
+                todos.push({ id: Date.now(), text: todoInput.value.trim(), completed: false });
+                todoInput.value = '';
+                renderTodos();
+            }
+        }
+        document.getElementById('add-todo-btn').addEventListener('click', addTodo);
+        todoInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addTodo(); });
+
+        window.toggleTodo = (id) => {
+            todos = todos.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
+            renderTodos();
+        };
+        window.deleteTodo = (id) => {
+            todos = todos.filter(t => t.id !== id);
+            renderTodos();
+        };
+
+        renderTodos();
+    });
+    </script>
+</body>
+</html>
