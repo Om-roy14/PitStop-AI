@@ -18,7 +18,7 @@ if not DATABASE_URL:
 
 engine = create_engine(
     DATABASE_URL,
-    echo=False
+    connect_args={"ssl": {"fake_flag_to_enable_ssl": True}} # Or use a proper cert dictionary if Aiven requires it
 )
 
 SessionLocal = sessionmaker(
