@@ -1,22 +1,20 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-
-from Backend.config import (
-    DB_USER,
-    DB_PASSWORD,
-    DB_HOST,
-    DB_NAME
-)
-
 from urllib.parse import quote_plus
 
-encoded_password = quote_plus(DB_PASSWORD)
+# Check if a cloud DATABASE_URL is provided (e.g., by Railway/Aiven)
+# Otherwise, fall back to building it from Backend/config.py
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-DATABASE_URL = (
-    f"mysql+pymysql://"
-    f"{DB_USER}:{encoded_password}"
-    f"@{DB_HOST}/{DB_NAME}"
-)
+if not DATABASE_URL:
+    from Backend.config import DB_USER, DB_PASSWORD, DB_HOST, DB_NAME
+    encoded_password = quote_plus(DB_PASSWORD)
+    DATABASE_URL = (
+        f"mysql+pymysql://"
+        f"{DB_USER}:{encoded_password}"
+        f"@{DB_HOST}/{DB_NAME}"
+    )
 
 engine = create_engine(
     DATABASE_URL,

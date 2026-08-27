@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/", "destination": "/FRONTEND/landing_page.html" },
+    { "source": "/login", "destination": "/FRONTEND/login.html" },
+    { "source": "/signup", "destination": "/FRONTEND/signup.html" },
+    { "source": "/dashboard", "destination": "/FRONTEND/db.html" },
+    { "source": "/portfolio", "destination": "/FRONTEND/db.html" },
+    { "source": "/generator", "destination": "/FRONTEND/index2.html" },
+    { "source": "/company", "destination": "/FRONTEND/com.html" }
+  ]
+}
