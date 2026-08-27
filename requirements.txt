@@ -28,3 +28,4 @@ google-genai==2.12.1
 openai==2.46.0
 groq==0.37.1
 bs4==0.0.2
+python-jose[cryptography]==3.4.0
