@@ -1,7 +1,7 @@
 // Automatically detect whether we are running locally or live on production
 const API_BASE_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
     ? 'http://localhost:8000'
-    : 'https://your-actual-railway-url.up.railway.app'; // <--- PASTE YOUR RAILWAY URL HERE
+    : 'https://pitstop-ai-production.up.railway.app'; // <--- PASTE YOUR RAILWAY URL HERE
 
 const Auth = {
     setToken: (token) => localStorage.setItem('pitstop_token', token),
