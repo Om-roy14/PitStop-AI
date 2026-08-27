@@ -16,9 +16,9 @@ client = OpenAI(
 
 # job_data = get_structured_data(url)
 
-project_data = pd.read_excel(
-    "D:/PitStop/Backend/Portfolio/Om_Roy_Projects.xlsx"
-)
+# project_data = pd.read_excel(
+#     "D:/PitStop/Backend/Portfolio/Om_Roy_Projects.xlsx"
+# )
 
 def get_user_portfolio_context(db: Session) -> str:
   """Reads portfolio data from MySQL and formats it for the LLM."""
