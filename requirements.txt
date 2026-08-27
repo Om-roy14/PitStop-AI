@@ -30,3 +30,4 @@ groq==0.37.1
 bs4==0.0.2
 python-jose[cryptography]==3.4.0
 bcrypt==4.2.1
+passlib==1.7.4
