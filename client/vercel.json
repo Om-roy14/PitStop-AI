@@ -1,7 +1,7 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/", "destination": "/index.html" },
+    { "source": "/", "destination": "/landing_page.html" },
     { "source": "/login", "destination": "/login.html" },
     { "source": "/signup", "destination": "/signup.html" },
     { "source": "/dashboard", "destination": "/just.html" },
