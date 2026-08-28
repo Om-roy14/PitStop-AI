@@ -25,7 +25,12 @@ if not DATABASE_URL:
 # ==========================================
 engine = create_engine(
     DATABASE_URL,
-    connect_args={"ssl": {"fake_flag_to_enable_ssl": True}} # Allows Aiven MySQL connections
+    connect_args={
+        "ssl": {"fake_flag_to_enable_ssl": True},
+        "connect_timeout": 10,
+    },
+    pool_recycle=280,
+    pool_pre_ping=True,
 )
 
 SessionLocal = sessionmaker(
