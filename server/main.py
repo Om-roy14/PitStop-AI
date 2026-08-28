@@ -45,12 +45,12 @@ middleware = [
     Middleware(
         CORSMiddleware,
         allow_origins=origins,
+        allow_origin_regex=r"https://pitstop-.*\.vercel\.app",
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
 ]
-
 # Initialize FastAPI with core middleware
 app = FastAPI(title="PitStop AI API", middleware=middleware)
 
