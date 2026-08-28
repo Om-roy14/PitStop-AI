@@ -23,15 +23,7 @@ from Backend.Databases.database import Base, engine, get_db
 from Backend.Databases.models import User, Portfolio, EmailLog, CompanyResearch
 
 # ==========================================
-# APP SETUP
-# ==========================================
-app = FastAPI(title="PitStop AI API")
-
-# Initialize database tables
-Base.metadata.create_all(bind=engine)
-
-# ==========================================
-# CORS SETUP (CORE LEVEL)
+# CORS SETUP
 # ==========================================
 origins = [
     "http://localhost:3000",
@@ -51,25 +43,28 @@ middleware = [
         allow_headers=["*"],
     )
 ]
-# Initialize FastAPI with core middleware
+
+# ==========================================
+# APP SETUP (single instance)
+# ==========================================
 app = FastAPI(title="PitStop AI API", middleware=middleware)
 
-# Initialize database tables
+# Initialize database tables (runs once, at import time)
 Base.metadata.create_all(bind=engine)
 
-# Custom fallback middleware to guarantee CORS headers pass through Railway proxy
+# Fallback middleware to guarantee CORS headers pass through Railway's proxy
 @app.middleware("http")
 async def add_cors_headers(request: Request, call_next):
     if request.method == "OPTIONS":
         response = Response()
-        response.headers["Access-Control-Allow-Origin"] = "https://pitstopai-eta.vercel.app"
+        response.headers["Access-Control-Allow-Origin"] = request.headers.get("origin", "https://pitstopai-eta.vercel.app")
         response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
         response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
         response.headers["Access-Control-Allow-Credentials"] = "true"
         return response
 
     response = await call_next(request)
-    response.headers["Access-Control-Allow-Origin"] = "https://pitstopai-eta.vercel.app"
+    response.headers["Access-Control-Allow-Origin"] = request.headers.get("origin", "https://pitstopai-eta.vercel.app")
     response.headers["Access-Control-Allow-Credentials"] = "true"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
@@ -130,7 +125,7 @@ def login(user_data: LoginRequest, db: Session = Depends(get_db)):
     user = login_user(db=db, email=user_data.email, password=user_data.password)
     if user is None:
         raise HTTPException(status_code=401, detail="Invalid email or password")
-    
+
     token = create_access_token(data={"sub": str(user.id)})
     return {
         "access_token": token,
@@ -158,7 +153,7 @@ def get_stats(db: Session = Depends(get_db), current_user: User = Depends(get_cu
 def read_all_portfolios(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     portfolios = db.query(Portfolio).filter(Portfolio.user_id == current_user.id).all()
     return [
-        {"id": p.Project_id, "project_name": p.Project_name, "tech_stack": p.teck_stack, "github_repo": p.github_repo} 
+        {"id": p.Project_id, "project_name": p.Project_name, "tech_stack": p.teck_stack, "github_repo": p.github_repo}
         for p in portfolios
     ]
 
@@ -204,10 +199,10 @@ def send_email(req: EmailSendRequest, db: Session = Depends(get_db), current_use
     log = db.query(EmailLog).filter(EmailLog.id == req.log_id, EmailLog.user_id == current_user.id).first()
     if not log:
         raise HTTPException(status_code=404, detail="Email record not found")
-    
+
     subject = f"Connecting regarding {log.company_url}"
     success, error = send_real_email(req.recipient_email, subject, log.email_content)
-    
+
     if success:
         log.status = "sent"
         log.recipient_email = req.recipient_email
