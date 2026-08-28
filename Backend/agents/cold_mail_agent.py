@@ -10,7 +10,7 @@ from Backend.Databases.database import SessionLocal  # Import your SessionLocal
 
 
 client = OpenAI(
-    api_key=os.getenv("COLD-EMAIL-API-KEY"),
+    api_key=os.getenv("COLD_EMAIL_API_KEY"),
     base_url="https://api.groq.com/openai/v1"
 )
 
