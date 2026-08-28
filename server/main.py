@@ -5,7 +5,7 @@ from typing import List, Optional
 from dotenv import load_dotenv
 load_dotenv()
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
@@ -28,13 +28,15 @@ app = FastAPI(title="PitStop AI API")
 # Initialize database tables
 Base.metadata.create_all(bind=engine)
 
-# Enable CORS so your Vercel frontend can talk to this Railway backend
+# ==========================================
+# CORS CONFIGURATION & BULLETPROOF MIDDLEWARE
+# ==========================================
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-    "https://pitstopai-eta.vercel.app",  # Your exact Vercel frontend URL
+    "https://pitstopai-eta.vercel.app",
 ]
 
 app.add_middleware(
@@ -44,6 +46,25 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Custom fallback middleware to guarantee CORS headers pass through Railway proxy
+@app.middleware("http")
+async def add_cors_headers(request: Request, call_next):
+    if request.method == "OPTIONS":
+        response = Response()
+        response.headers["Access-Control-Allow-Origin"] = "https://pitstopai-eta.vercel.app"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        return response
+
+    response = await call_next(request)
+    response.headers["Access-Control-Allow-Origin"] = "https://pitstopai-eta.vercel.app"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+    return response
+
 # ==========================================
 # REQUEST MODELS
 # ==========================================
@@ -73,6 +94,13 @@ class EmailSendRequest(BaseModel):
 
 class CompanyRequest(BaseModel):
     name: str
+
+# ==========================================
+# API: HEALTH CHECK
+# ==========================================
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 # ==========================================
 # API: AUTHENTICATION
