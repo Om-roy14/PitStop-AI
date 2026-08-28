@@ -9,6 +9,8 @@ from fastapi import Depends, FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from fastapi.middleware import Middleware
+
 
 # ==========================================
 # BACKEND IMPORTS
@@ -29,7 +31,7 @@ app = FastAPI(title="PitStop AI API")
 Base.metadata.create_all(bind=engine)
 
 # ==========================================
-# CORS CONFIGURATION & BULLETPROOF MIDDLEWARE
+# CORS SETUP (CORE LEVEL)
 # ==========================================
 origins = [
     "http://localhost:3000",
@@ -39,13 +41,21 @@ origins = [
     "https://pitstopai-eta.vercel.app",
 ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+middleware = [
+    Middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+]
+
+# Initialize FastAPI with core middleware
+app = FastAPI(title="PitStop AI API", middleware=middleware)
+
+# Initialize database tables
+Base.metadata.create_all(bind=engine)
 
 # Custom fallback middleware to guarantee CORS headers pass through Railway proxy
 @app.middleware("http")
