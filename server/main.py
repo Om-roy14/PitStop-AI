@@ -29,14 +29,21 @@ app = FastAPI(title="PitStop AI API")
 Base.metadata.create_all(bind=engine)
 
 # Enable CORS so your Vercel frontend can talk to this Railway backend
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "https://pitstopai-eta.vercel.app",  # Your exact Vercel frontend URL
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # ==========================================
 # REQUEST MODELS
 # ==========================================
