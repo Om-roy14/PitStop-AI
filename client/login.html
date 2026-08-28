@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="shortcut icon" href="/static/logo1.png" type="image/x-icon">
-
-  <link rel="stylesheet" href="/static/login.css">
+  
+  <!-- Removed /static/ from paths -->
+  <link rel="shortcut icon" href="logo1.png" type="image/x-icon">
+  <link rel="stylesheet" href="login.css">
+  
   <title>PitStop AI — Login</title>
 </head>
 <body>
@@ -34,11 +36,14 @@
 
     <div class="footer-dock">
       <span>Don't have an account?</span>
-      <a href="/signup" class="dock-link">Register</a>
+      <!-- Pointed to signup.html -->
+      <a href="signup.html" class="dock-link">Register</a>
     </div>
   </main>
 
-  <script src="/FRONTEND/auth.js"></script>
+  <!-- Removed /FRONTEND/ from the script path -->
+  <script src="auth.js"></script>
+  
   <script>
     document.getElementById("loginForm").addEventListener("submit", async function(event) {
         event.preventDefault();
@@ -49,7 +54,8 @@
         msgBox.textContent = "Logging in...";
 
         try {
-            const response = await fetch("/api/login", {
+            // Appended API_BASE_URL to point directly to Railway!
+            const response = await fetch(API_BASE_URL + "/api/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: email, password: password })
@@ -63,7 +69,8 @@
 
             // Save JWT using our centralized Auth module
             Auth.setToken(data.access_token);
-            window.location.replace("/dashboard");
+            // Redirect to the dashboard file
+            window.location.replace("just.html");
 
         } catch (error) {
             console.error("Login error:", error);

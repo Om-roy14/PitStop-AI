@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="shortcut icon" href="/static/logo1.png" type="image/x-icon">
-
-  <link rel="stylesheet" href="/static/signup.css">
+  
+  <!-- Removed /static/ from paths -->
+  <link rel="shortcut icon" href="logo1.png" type="image/x-icon">
+  <link rel="stylesheet" href="signup.css">
+  
   <title>PitStop AI — Register</title>
 </head>
 <body>
@@ -39,9 +41,13 @@
 
     <div class="footer-dock">
       <span>Already have an account?</span>
-      <a href="/login" class="dock-link">Login</a>
+      <!-- Pointed to login.html -->
+      <a href="login.html" class="dock-link">Login</a>
     </div>
   </main>
+
+  <!-- Included auth.js to access API_BASE_URL -->
+  <script src="auth.js"></script>
 
   <script>
     document.getElementById('registerForm').addEventListener('submit', async function (e) {
@@ -57,7 +63,8 @@
       };
 
       try {
-        const response = await fetch('/api/signup', {
+        // Appended API_BASE_URL to point directly to Railway!
+        const response = await fetch(API_BASE_URL + '/api/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
@@ -71,7 +78,8 @@
         document.getElementById('registerForm').reset();
 
         setTimeout(() => {
-          window.location.href = '/login'; 
+          // Redirect to login.html
+          window.location.href = 'login.html'; 
         }, 1200);
       } catch (error) {
         msgBox.style.color = '#FFA8A8';

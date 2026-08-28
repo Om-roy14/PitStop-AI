@@ -8,9 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link rel="stylesheet" href="/static/dashboard1.css?v=1">
-        <link rel="shortcut icon" href="/static/logo1.png" type="image/x-icon">
-
+    
+    <!-- Removed /static/ from paths -->
+    <link rel="stylesheet" href="dashboard1.css?v=1">
+    <link rel="shortcut icon" href="logo1.png" type="image/x-icon">
 </head>
 <body>
     <div class="bg-glow top-left"></div>
@@ -18,10 +19,10 @@
 
     <div class="app-container">
         <nav class="top-nav glass-panel">
-            <div class="nav-left cursor-pointer" data-route="/dashboard">
+            <!-- Updated route for Vercel -->
+            <div class="nav-left cursor-pointer" data-route="just.html">
                 <div class="logo-icon">
-                    <!-- <i class="ph-fill ph-paper-plane-tilt"></i> -->
-                     <img src="/static/logo1.png" alt="">
+                     <img src="logo1.png" alt="PitStop Logo">
                 </div>
                 <div class="nav-brand">
                     <h1 class="logo-text">PITSTOP AI</h1>
@@ -50,7 +51,8 @@
         </header>
 
         <section class="primary-features grid-layout">
-            <div class="feature-card dark-card" data-route="/generator">
+            <!-- Updated routes for Vercel -->
+            <div class="feature-card dark-card" data-route="index2.html">
                 <div class="card-icon dark-icon">
                     <i class="ph ph-envelope-simple"></i>
                 </div>
@@ -58,7 +60,7 @@
                     <h3 class="card-title">Cold Email</h3>
                     <p class="card-description">Generate personalized AI-powered outreach.</p>
                 </div>
-                <button class="primary-btn dark-btn" data-route="/generator">
+                <button class="primary-btn dark-btn" data-route="index2.html">
                     Generate Email <i class="ph ph-arrow-right"></i>
                 </button>
                 <div class="card-bg-decoration">
@@ -66,7 +68,8 @@
                 </div>
             </div>
 
-            <div class="feature-card light-card" data-route="/portfolio_store">
+            <!-- Updated routes for Vercel -->
+            <div class="feature-card light-card" data-route="db.html">
                 <div class="card-icon light-icon">
                     <i class="ph ph-folder-notch"></i>
                 </div>
@@ -74,12 +77,13 @@
                     <h3 class="card-title">Portfolio</h3>
                     <p class="card-description">Manage and organize your projects.</p>
                 </div>
-                <button class="primary-btn light-btn" data-route="/portfolio_store">
+                <button class="primary-btn light-btn" data-route="db.html">
                     Manage Portfolio <i class="ph ph-arrow-right"></i>
                 </button>
             </div>
 
-            <div class="feature-card light-card accent-border" data-route="/company">
+            <!-- Updated routes for Vercel -->
+            <div class="feature-card light-card accent-border" data-route="com.html">
                 <div class="card-icon accent-icon">
                     <i class="ph ph-buildings"></i>
                 </div>
@@ -87,7 +91,7 @@
                     <h3 class="card-title">Company Research</h3>
                     <p class="card-description">Research companies before reaching out.</p>
                 </div>
-                <button class="primary-btn light-btn" data-route="/company">
+                <button class="primary-btn light-btn" data-route="com.html">
                     Research Company <i class="ph ph-arrow-right"></i>
                 </button>
             </div>
@@ -128,8 +132,9 @@
         </section>
     </div>
 
-    <!-- Auth Script injected -->
-    <script src="/FRONTEND/auth.js"></script>
+    <!-- Removed /FRONTEND/ from the script path -->
+    <script src="auth.js"></script>
+    
     <script>
     document.addEventListener('DOMContentLoaded', async () => {
         // Enforce Authentication
@@ -191,7 +196,8 @@
 
         // Handle Routing Simulation
         function navigateTo(route) {
-            if(route === '/dashboard') return;
+            // Updated to check against the new Vercel HTML file name
+            if(route === 'just.html') return;
             window.location.href = route;
         }
 

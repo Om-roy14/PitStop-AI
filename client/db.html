@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PitStop AI - Portfolio Manager</title>
-  <link rel="stylesheet" href="/static/db.css?v=1">
-      <link rel="shortcut icon" href="/static/logo1.png" type="image/x-icon">
+  
+  <!-- Removed /static/ from paths -->
+  <link rel="stylesheet" href="db.css?v=1">
+  <link rel="shortcut icon" href="logo1.png" type="image/x-icon">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -24,10 +26,8 @@
 
         <div class="flex items-center gap-4">
           <div class="logo-mark">
-            <!-- <i class="fa-solid fa-bolt"></i> -->
-             <img src="/static/logo1.png" alt="">
+             <img src="logo1.png" alt="PitStop AI Logo">
           </div>
-
           <div>
             <h1 class="nav-title">PitStop AI</h1>
             <span class="nav-subtitle">Portfolio Manager</span>
@@ -35,11 +35,11 @@
         </div>
 
         <div class="flex items-center gap-4">
-          <a href="/dashboard" class="nav-link">
+          <!-- Pointed back to the HTML file for Vercel -->
+          <a href="just.html" class="nav-link">
             <i class="fa-solid fa-grid-2"></i>
             <span>Dashboard</span>
           </a>
-
           <button onclick="openAddModal()" class="btn-primary" id="addProject">
             <i class="fa-solid fa-plus"></i>
             <span>Add Project</span>
@@ -54,35 +54,25 @@
     <div class="max-w-7xl mx-auto px-6 py-8">
 
       <div class="portfolio-header">
-
         <div class="portfolio-title-section">
-
           <div class="portfolio-icon">
             <i class="fa-solid fa-folder-open"></i>
           </div>
-
           <div>
             <h2 class="portfolio-title">Portfolio</h2>
-            <p class="portfolio-subtitle">
-              Manage the projects that power your personalized outreach.
-            </p>
+            <p class="portfolio-subtitle">Manage the projects that power your personalized outreach.</p>
           </div>
-
         </div>
-
         <div class="project-count-badge">
           <span class="count-number" id="projectCount">0</span>
           <span class="count-label">Projects</span>
         </div>
-
       </div>
 
       <div class="glass-card main-card">
 
         <div class="table-container desktop-view">
-
           <table class="portfolio-table">
-
             <thead>
               <tr>
                 <th class="col-id">ID</th>
@@ -92,44 +82,31 @@
                 <th class="col-actions">Actions</th>
               </tr>
             </thead>
-
             <tbody id="portfolioTableBody"></tbody>
-
           </table>
-
         </div>
 
         <div class="mobile-view" id="mobileCardsContainer"></div>
 
         <div id="emptyState" class="empty-state hidden">
-
           <div class="empty-icon">
             <i class="fa-regular fa-folder-open"></i>
           </div>
-
           <h3 class="empty-title">No projects yet</h3>
-
-          <p class="empty-text">
-            Add your first project to start building your personalized outreach profile.
-          </p>
-
+          <p class="empty-text">Add your first project to start building your personalized outreach profile.</p>
           <button onclick="openAddModal()" class="btn-primary btn-large">
             <i class="fa-solid fa-plus"></i>
             Add Project
           </button>
-
         </div>
 
         <div id="loadingState" class="loading-state">
-
           <div class="loader-container">
             <div class="loader-ring"></div>
             <div class="loader-ring"></div>
             <div class="loader-ring"></div>
           </div>
-
           <p class="loading-text">Loading your portfolio...</p>
-
         </div>
 
       </div>
@@ -137,136 +114,69 @@
   </main>
 
   <div id="addModal" class="modal-overlay hidden">
-
     <div class="modal-backdrop" onclick="closeAddModal()"></div>
-
     <div class="modal-container">
-
       <div class="modal-header">
-
         <div class="modal-icon">
           <i class="fa-solid fa-plus-circle"></i>
         </div>
-
         <h3 class="modal-title">Add New Project</h3>
-
         <button onclick="closeAddModal()" class="modal-close">
           <i class="fa-solid fa-xmark"></i>
         </button>
-
       </div>
 
       <form id="addForm" onsubmit="submitAddProject(event)" class="modal-form">
-
         <div class="form-group">
-
           <label for="add_name" class="form-label">
-            <i class="fa-solid fa-cube"></i>
-            Project Name
+            <i class="fa-solid fa-cube"></i> Project Name
           </label>
-
-          <input
-            type="text"
-            id="add_name"
-            required
-            class="form-input"
-            placeholder="Enter project name"
-          />
-
+          <input type="text" id="add_name" required class="form-input" placeholder="Enter project name" />
         </div>
 
         <div class="form-group">
-
           <label for="add_stack" class="form-label">
-            <i class="fa-solid fa-layer-group"></i>
-            Tech Stack
+            <i class="fa-solid fa-layer-group"></i> Tech Stack
           </label>
-
-          <input
-            type="text"
-            id="add_stack"
-            required
-            class="form-input"
-            placeholder="e.g., Python, FastAPI, React, PostgreSQL"
-          />
-
-          <span class="form-hint">
-            Separate technologies with commas
-          </span>
-
+          <input type="text" id="add_stack" required class="form-input" placeholder="e.g., Python, FastAPI, React, PostgreSQL" />
+          <span class="form-hint">Separate technologies with commas</span>
         </div>
 
         <div class="form-group">
-
           <label for="add_repo" class="form-label">
-            <i class="fa-brands fa-github"></i>
-            GitHub Repository URL
+            <i class="fa-brands fa-github"></i> GitHub Repository URL
           </label>
-
-          <input
-            type="url"
-            id="add_repo"
-            required
-            class="form-input"
-            placeholder="https://github.com/username/repository"
-          />
-
+          <input type="url" id="add_repo" required class="form-input" placeholder="https://github.com/username/repository" />
         </div>
 
         <div class="modal-actions">
-
-          <button
-            type="button"
-            onclick="closeAddModal()"
-            class="btn-secondary"
-          >
-            Cancel
-          </button>
-
+          <button type="button" onclick="closeAddModal()" class="btn-secondary">Cancel</button>
           <button type="submit" class="btn-primary">
-            <i class="fa-solid fa-check"></i>
-            Save Project
+            <i class="fa-solid fa-check"></i> Save Project
           </button>
-
         </div>
-
       </form>
-
     </div>
   </div>
 
-  <script src="/FRONTEND/auth.js"></script>
+  <!-- Removed /FRONTEND/ from the script path -->
+  <script src="auth.js"></script>
 
   <script>
-
     Auth.protectPage();
-
     let allProjects = [];
 
     function showToast(message, type = 'success') {
-
       const toast = document.getElementById('toast');
-
       if (!toast) return;
 
       const isSuccess = type === 'success';
-
-      const iconClass =
-        isSuccess
-          ? 'fa-circle-check'
-          : 'fa-circle-exclamation';
-
-      const toastClass =
-        isSuccess
-          ? 'toast-success'
-          : 'toast-error';
+      const iconClass = isSuccess ? 'fa-circle-check' : 'fa-circle-exclamation';
+      const toastClass = isSuccess ? 'toast-success' : 'toast-error';
 
       toast.className = `toast ${toastClass}`;
-
       toast.innerHTML = `
-        <div class="toast-icon">
-          <i class="fa-solid ${iconClass}"></i>
-        </div>
+        <div class="toast-icon"><i class="fa-solid ${iconClass}"></i></div>
         <span class="toast-message">${message}</span>
       `;
 
@@ -280,369 +190,154 @@
     }
 
     function openAddModal() {
-
       const modal = document.getElementById('addModal');
-
       modal.classList.remove('hidden');
-
       document.body.style.overflow = 'hidden';
-
-      setTimeout(() => {
-        document.getElementById('add_name')?.focus();
-      }, 100);
+      setTimeout(() => { document.getElementById('add_name')?.focus(); }, 100);
     }
 
     function closeAddModal() {
-
       const modal = document.getElementById('addModal');
-
       modal.classList.add('hidden');
-
       document.body.style.overflow = '';
-
       document.getElementById('addForm')?.reset();
     }
 
     async function loadProjects() {
+      const loadingState = document.getElementById('loadingState');
+      const emptyState = document.getElementById('emptyState');
+      const tableBody = document.getElementById('portfolioTableBody');
+      const mobileContainer = document.getElementById('mobileCardsContainer');
 
-      const loadingState =
-        document.getElementById('loadingState');
-
-      const emptyState =
-        document.getElementById('emptyState');
-
-      const tableBody =
-        document.getElementById('portfolioTableBody');
-
-      const mobileContainer =
-        document.getElementById('mobileCardsContainer');
-
-      if (loadingState)
-        loadingState.classList.remove('hidden');
-
-      if (emptyState)
-        emptyState.classList.add('hidden');
-
-      if (tableBody)
-        tableBody.innerHTML = '';
-
-      if (mobileContainer)
-        mobileContainer.innerHTML = '';
+      if (loadingState) loadingState.classList.remove('hidden');
+      if (emptyState) emptyState.classList.add('hidden');
+      if (tableBody) tableBody.innerHTML = '';
+      if (mobileContainer) mobileContainer.innerHTML = '';
 
       try {
-
-        const response =
-          await Auth.fetch('/api/portfolio');
-
-        if (!response.ok)
-          throw new Error('Failed to fetch portfolios');
+        const response = await Auth.fetch('/api/portfolio');
+        if (!response.ok) throw new Error('Failed to fetch portfolios');
 
         allProjects = await response.json();
-
         renderTable(allProjects);
-
       } catch (err) {
-
         showToast(err.message, 'error');
-
       } finally {
-
-        if (loadingState)
-          loadingState.classList.add('hidden');
-
+        if (loadingState) loadingState.classList.add('hidden');
       }
     }
 
     function renderTable(projects) {
+      const tableBody = document.getElementById('portfolioTableBody');
+      const mobileContainer = document.getElementById('mobileCardsContainer');
+      const countEl = document.getElementById('projectCount');
+      const emptyState = document.getElementById('emptyState');
 
-      const tableBody =
-        document.getElementById('portfolioTableBody');
-
-      const mobileContainer =
-        document.getElementById('mobileCardsContainer');
-
-      const countEl =
-        document.getElementById('projectCount');
-
-      const emptyState =
-        document.getElementById('emptyState');
-
-      if (countEl)
-        countEl.textContent = projects.length;
-
-      if (tableBody)
-        tableBody.innerHTML = '';
-
-      if (mobileContainer)
-        mobileContainer.innerHTML = '';
+      if (countEl) countEl.textContent = projects.length;
+      if (tableBody) tableBody.innerHTML = '';
+      if (mobileContainer) mobileContainer.innerHTML = '';
 
       if (projects.length === 0) {
-
         emptyState?.classList.remove('hidden');
-
         return;
       }
 
       projects.forEach(p => {
+        const tags = (p.tech_stack || '').split(',').map(tag => {
+          return `<span class="tech-badge">${tag.trim()}</span>`;
+        }).join('');
 
-        const tags =
-          (p.tech_stack || '')
-            .split(',')
-            .map(tag => {
-
-              const trimmed = tag.trim();
-
-              return `
-                <span class="tech-badge">
-                  ${trimmed}
-                </span>
-              `;
-
-            })
-            .join('');
-
-        const row =
-          document.createElement('tr');
-
+        // Desktop Row
+        const row = document.createElement('tr');
         row.className = 'table-row';
-
         row.innerHTML = `
-
-          <td class="cell-id">
-            <span class="id-badge">
-              #${p.id}
-            </span>
-          </td>
-
-          <td class="cell-name">
-            <span class="project-name">
-              ${p.project_name}
-            </span>
-          </td>
-
-          <td class="cell-stack">
-            <div class="tech-stack">
-              ${tags}
-            </div>
-          </td>
-
+          <td class="cell-id"><span class="id-badge">#${p.id}</span></td>
+          <td class="cell-name"><span class="project-name">${p.project_name}</span></td>
+          <td class="cell-stack"><div class="tech-stack">${tags}</div></td>
           <td class="cell-repo">
-
-            <a
-              href="${p.github_repo}"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="repo-link"
-            >
-
+            <a href="${p.github_repo}" target="_blank" rel="noopener noreferrer" class="repo-link">
               <i class="fa-brands fa-github"></i>
-
-              <span>
-                View Repository
-              </span>
-
+              <span>View Repository</span>
               <i class="fa-solid fa-arrow-up-right-from-square"></i>
-
             </a>
-
           </td>
-
           <td class="cell-actions">
-
-            <button
-              onclick="deleteProject(${p.id})"
-              class="btn-delete"
-              title="Delete project"
-            >
-
+            <button onclick="deleteProject(${p.id})" class="btn-delete" title="Delete project">
               <i class="fa-regular fa-trash-can"></i>
-
             </button>
-
           </td>
         `;
-
         tableBody?.appendChild(row);
 
-        const card =
-          document.createElement('div');
-
+        // Mobile Card
+        const card = document.createElement('div');
         card.className = 'project-card';
-
         card.innerHTML = `
-
           <div class="card-header">
-
-            <span class="card-id">
-              #${p.id}
-            </span>
-
-            <button
-              onclick="deleteProject(${p.id})"
-              class="btn-delete-card"
-              title="Delete project"
-            >
-
+            <span class="card-id">#${p.id}</span>
+            <button onclick="deleteProject(${p.id})" class="btn-delete-card" title="Delete project">
               <i class="fa-regular fa-trash-can"></i>
-
             </button>
-
           </div>
-
-          <h4 class="card-title">
-            ${p.project_name}
-          </h4>
-
+          <h4 class="card-title">${p.project_name}</h4>
           <div class="card-stack">
-
-            <span class="stack-label">
-              Tech Stack
-            </span>
-
-            <div class="tech-stack">
-              ${tags}
-            </div>
-
+            <span class="stack-label">Tech Stack</span>
+            <div class="tech-stack">${tags}</div>
           </div>
-
-          <a
-            href="${p.github_repo}"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="repo-link-card"
-          >
-
+          <a href="${p.github_repo}" target="_blank" rel="noopener noreferrer" class="repo-link-card">
             <i class="fa-brands fa-github"></i>
-
-            <span>
-              View Repository
-            </span>
-
+            <span>View Repository</span>
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
-
           </a>
-
         `;
-
         mobileContainer?.appendChild(card);
-
       });
     }
 
     async function submitAddProject(e) {
-
       e.preventDefault();
 
       const payload = {
-
-        project_name:
-          document
-            .getElementById('add_name')
-            .value
-            .trim(),
-
-        tech_stack:
-          document
-            .getElementById('add_stack')
-            .value
-            .trim(),
-
-        github_repo:
-          document
-            .getElementById('add_repo')
-            .value
-            .trim()
-
+        project_name: document.getElementById('add_name').value.trim(),
+        tech_stack: document.getElementById('add_stack').value.trim(),
+        github_repo: document.getElementById('add_repo').value.trim()
       };
 
       try {
+        const response = await Auth.fetch('/api/portfolio', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
 
-        const response =
-          await Auth.fetch('/api/portfolio', {
+        if (!response.ok) throw new Error('Could not add portfolio');
 
-            method: 'POST',
-
-            body: JSON.stringify(payload)
-
-          });
-
-        if (!response.ok)
-          throw new Error('Could not add portfolio');
-
-        showToast(
-          'Project added successfully!'
-        );
-
+        showToast('Project added successfully!');
         closeAddModal();
-
         loadProjects();
-
       } catch (err) {
-
-        showToast(
-          err.message,
-          'error'
-        );
-
+        showToast(err.message, 'error');
       }
     }
 
     async function deleteProject(id) {
-
-      if (
-        !confirm(
-          `Delete project #${id}? This action cannot be undone.`
-        )
-      )
-        return;
+      if (!confirm(`Delete project #${id}? This action cannot be undone.`)) return;
 
       try {
+        const response = await Auth.fetch(`/api/portfolio/${id}`, { method: 'DELETE' });
+        if (!response.ok) throw new Error('Could not delete portfolio');
 
-        const response =
-          await Auth.fetch(
-            `/api/portfolio/${id}`,
-            {
-              method: 'DELETE'
-            }
-          );
-
-        if (!response.ok)
-          throw new Error(
-            'Could not delete portfolio'
-          );
-
-        showToast(
-          'Project deleted successfully'
-        );
-
+        showToast('Project deleted successfully');
         loadProjects();
-
       } catch (err) {
-
-        showToast(
-          err.message,
-          'error'
-        );
-
+        showToast(err.message, 'error');
       }
     }
 
-    document.addEventListener(
-      'keydown',
-      (e) => {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeAddModal();
+    });
 
-        if (e.key === 'Escape')
-          closeAddModal();
-
-      }
-    );
-
-    document.addEventListener(
-      'DOMContentLoaded',
-      loadProjects
-    );
-
+    document.addEventListener('DOMContentLoaded', loadProjects);
   </script>
-
 </body>
 </html>

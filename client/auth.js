@@ -1,7 +1,7 @@
 // Automatically detect whether we are running locally or live on production
 const API_BASE_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
     ? 'http://localhost:8000'
-    : 'https://pitstop-ai-production.up.railway.app'; // <--- PASTE YOUR RAILWAY URL HERE
+    : 'https://pitstop-ai-production.up.railway.app'; // Railway backend URL
 
 const Auth = {
     setToken: (token) => localStorage.setItem('pitstop_token', token),
@@ -15,7 +15,8 @@ const Auth = {
     logout: () => {
         localStorage.removeItem('pitstop_token');
         localStorage.removeItem('user');
-        window.location.href = '/login';
+        // Pointed to login.html for Vercel static routing
+        window.location.href = 'login.html';
     },
     
     isAuthenticated: () => !!localStorage.getItem('pitstop_token'),

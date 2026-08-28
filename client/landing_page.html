@@ -6,9 +6,9 @@
     <title>PitStop AI — Turn Job Opportunities Into Personalized Outreach</title>
     <meta name="description" content="AI-powered career automation platform that researches opportunities, understands companies, and matches your experience to create personalized outreach." />
     
-    <!-- Cache-busting CSS link -->
-    <link rel="stylesheet" href="/static/style.css?v=1" />
-    <link rel="shortcut icon" href="/static/logo1.png" type="image/x-icon">
+    <!-- Removed /static/ from paths -->
+    <link rel="stylesheet" href="style.css?v=1" />
+    <link rel="shortcut icon" href="logo1.png" type="image/x-icon">
     <!-- Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,7 @@
       <nav class="navbar container">
         <a href="#" class="brand-logo">
           <div class="brand-icon">
-            <img src="/static/logo1.png" alt="PitStop AI Logo">
+            <img src="logo1.png" alt="PitStop AI Logo">
           </div>
           PITSTOP AI
         </a>
@@ -35,8 +35,9 @@
         </ul>
 
         <div class="nav-actions">
-          <a href="/login" class="btn-ghost">Login</a>
-          <a href="/signup" class="btn-primary">GET STARTED</a>
+          <!-- Pointed to .html files -->
+          <a href="login.html" class="btn-ghost">Login</a>
+          <a href="signup.html" class="btn-primary">GET STARTED</a>
           <button class="mobile-toggle" aria-label="Toggle Menu">
             <span></span>
             <span></span>
@@ -63,8 +64,9 @@
             Research the opportunity. Understand the company. Match your experience. Create personalized outreach — all with AI.
           </p>
           <div class="hero-cta-group">
-            <a href="#signup" class="btn-primary" style="padding: 14px 32px; font-size: 0.95rem;">GET STARTED</a>
-            <a href="#login" class="btn-secondary-pill">LOGIN</a>
+            <!-- Pointed to .html files -->
+            <a href="signup.html" class="btn-primary" style="padding: 14px 32px; font-size: 0.95rem;">GET STARTED</a>
+            <a href="login.html" class="btn-secondary-pill">LOGIN</a>
           </div>
         </div>
 
@@ -307,8 +309,7 @@
         <div class="founder-card">
           <div class="founder-avatar-wrap">
             <div class="founder-avatar">
-              <!-- Replaced initials with the profile image tag here -->
-              <img src="/static/profile.png" alt="Om Roy" class="founder-img" />
+              <img src="profile.png" alt="Om Roy" class="founder-img" />
               <div class="founder-badge-role">Founder & Developer</div>
             </div>
           </div>
@@ -349,8 +350,8 @@
             Create your profile and start turning opportunities into personalized conversations.
           </p>
           <div class="cta-buttons">
-            <a href="#signup" class="btn-cta-white">GET STARTED</a>
-            <a href="#login" class="btn-cta-outline">LOGIN</a>
+            <a href="signup.html" class="btn-cta-white">GET STARTED</a>
+            <a href="login.html" class="btn-cta-outline">LOGIN</a>
           </div>
         </div>
       </div>
@@ -376,8 +377,8 @@
             <li><a href="#">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#how-it-works">How It Works</a></li>
-            <li><a href="#login">Login</a></li>
-            <li><a href="#signup">Sign Up</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
           </ul>
         </div>
 

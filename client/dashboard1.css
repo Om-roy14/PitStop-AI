@@ -1,7 +1,7 @@
 /* ==========================================================================
    CSS VARIABLES & THEME
    ========================================================================== */
-   :root {
+:root {
     /* Brand Colors */
     --deep-navy: #001B48;
     --ocean-blue: #02457A;
@@ -48,17 +48,17 @@
 }
 
 body {
-    background-color: var(--bg-page);
+    background-color: var(--c-navy-dark);
+    /* Removed /static/ from the image path */
+    background-image: url('bg4.jpg'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
     color: var(--text-primary);
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
     padding: 80px 32px 32px 32px; 
-  background-color: var(--c-navy-dark); 
-  background-image: url('/static/bg4.jpg'); 
-  background-size: cover; 
-  background-repeat: no-repeat; 
-  background-attachment: fixed;
 } 
 
 /* Background Glow Effects */
@@ -129,17 +129,15 @@ body {
     gap: var(--spacing-sm);
 }
 
-.logo-icon img{
-    /* background: linear-gradient(135deg, var(--ocean-blue), var(--azure)); */
+.logo-icon img {
     color: var(--text-light);
-  width: 100px;
-  height: 80px;
+    width: 100px;
+    height: 80px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.25rem;
-    /* box-shadow: 0 4px 12px rgba(1, 138, 190, 0.3); */
 }
 
 .nav-brand {

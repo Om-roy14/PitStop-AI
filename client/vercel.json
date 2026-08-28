@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/signup", "destination": "/signup.html" },
+    { "source": "/dashboard", "destination": "/just.html" },
+    { "source": "/portfolio", "destination": "/db.html" },
+    { "source": "/generator", "destination": "/index2.html" },
+    { "source": "/company", "destination": "/com.html" }
+  ]
+}

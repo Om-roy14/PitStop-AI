@@ -37,7 +37,8 @@ body {
   /* Added top padding to account for the absolute nav button */
   padding: 80px 32px 32px 32px; 
   background-color: var(--c-navy-dark); 
-  background-image: url('/static/bg4.jpg'); 
+  /* Removed /static/ from the image path */
+  background-image: url('bg4.jpg'); 
   background-size: cover; 
   background-repeat: no-repeat; 
   background-attachment: fixed;

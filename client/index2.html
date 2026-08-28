@@ -4,15 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PitStop AI - Cold Email Generator</title>
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="stylesheet" href="/static/email_generator.css?v=1" />
-    <link rel="shortcut icon" href="/static/logo1.png" type="image/x-icon">
-
-
+  <!-- Removed /static/ from paths -->
+  <link rel="stylesheet" href="email_generator.css?v=1" />
+  <link rel="shortcut icon" href="logo1.png" type="image/x-icon">
 </head>
 <body>
 
-  <a href="/dashboard" class="nav-btn"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+  <!-- Pointed back to the HTML file for Vercel -->
+  <a href="just.html" class="nav-btn"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
 
   <div id="toast" class="toast">
     <i id="toastIcon" class="fa-solid fa-circle-check"></i>
@@ -94,7 +95,9 @@
 
   </main>
 
-  <script src="/FRONTEND/auth.js"></script>
+  <!-- Removed /FRONTEND/ from the script path -->
+  <script src="auth.js"></script>
+  
   <script>
     Auth.protectPage();
     let generatedEmailText = "";
@@ -167,7 +170,7 @@
 
             if (response.ok) {
                 showToast("Email dispatched successfully!");
-                document.getElementById("sendBtn").classList.add("hidden"); // hide after success
+                document.getElementById("sendBtn").classList.add("hidden");
             } else {
                 const err = await response.json();
                 showToast(err.detail || "Failed to send email.", false);
