@@ -1,0 +1,137 @@
+PitStop AI — Your Career, Accelerated.
+An AI-powered career workspace for personalized job outreach, portfolio management, and company research.
+
+---> What It Does
+AI Cold Email Generator: Takes a job URL → scrapes job details → extracts requirements → matches relevant portfolio projects → generates a personalized cold email.
+Portfolio Manager: Create, view, update, and delete projects with tech stacks and GitHub repositories.
+Company Research: Generates structured company/interview intelligence from a company name.
+Authentication: Registration, login, protected pages, and token-based request handling.
+Database: MySQL + SQLAlchemy for persistent users and portfolio data.
+
+--->  Core AI Workflow
+Job URL
+  ↓
+Web Scraping (WebBaseLoader)
+  ↓
+Job Information Extraction
+  ↓
+Portfolio Data (MySQL)
+  ↓
+Project Relevance Agent
+  ↓
+Relevant Projects
+  ↓
+Cold Mail Agent
+  ↓
+Personalized Email
+
+--->  Project Structure
+PitStop/
+├── .env
+├── description.md
+├── features.md
+├── package.json
+├── PIT-STOP AI BACKEND WORKFLOW.png
+├── main.py
+├── .vscode/
+├── Backend/
+│   ├── auth.py
+│   ├── config.py
+│   ├── agents/
+│   │   ├── cold_mail_agent.py
+│   │   └── digging_agent.py
+│   ├── Databases/
+│   │   ├── database.py
+│   │   └── models.py
+│   ├── functions/
+│   │   └── portfolio_acccess.py
+│   ├── Portfolio/
+│   │   └── extract_portfolio.py
+│   └── web_scraping/
+│       └── web_data.py
+├── FRONTEND/
+│   ├── landing_page.html
+│   ├── login.html
+│   ├── signup.html
+│   ├── db.html
+│   ├── com.html
+│   └── ...
+└── static/
+    ├── *.css
+    ├── *.jpg
+    ├── *.png
+    └── ...
+
+--->  Tech Stack
+
+Frontend: HTML, CSS, JavaScript, Tailwind CSS, Font Awesome
+Backend: Python, FastAPI
+AI: Groq API + openai/gpt-oss-120b
+Agents: Cold Mail Agent, Digging/Research Agent
+Web Extraction: LangChain WebBaseLoader
+Database: MySQL + SQLAlchemy
+Deployment Configuration: Vercel frontend configuration + backend Procfile
+
+--->  Installation & Setup
+git clone <repository-url>
+cd PitStop
+
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+pip install -r requirements.txt
+
+Install Node dependencies if required:
+
+npm install
+
+Create/configure .env with the actual credentials required by the project's configuration, including database and AI API credentials.
+
+--->  Database Setup
+Install and start MySQL.
+Create the required database.
+Configure the database connection in .env.
+Start the application so SQLAlchemy can access the configured database.
+Ensure the required user and portfolio tables are available.
+
+--->  Run
+
+From the project root:
+
+python main.py
+
+Then open the local FastAPI application in your browser using the host/port shown by the server.
+
+--->  Main Application Routes
+/              → Landing page
+/login         → Login
+/register      → Registration
+/dashboard     → Dashboard
+/portfolio_store → Portfolio management
+/generator     → AI cold-email generator
+/company       → Company research
+
+---> Important API Endpoints
+POST   /login
+POST   /register
+GET    /api/portfolio
+POST   /api/portfolio
+GET    /api/portfolio/{id}
+PUT    /api/portfolio/{id}
+DELETE /api/portfolio/{id}
+POST   /email
+POST   /info
+
+---> Current Scope
+
+Implemented: Authentication, portfolio CRUD, job scraping, job extraction, AI project matching, cold-email generation, company research, MySQL persistence, responsive frontend.
+
+Not implemented in the supplied source: Actual email sending, delivery tracking, hiring-email discovery, application-history/analytics system, resume-processing workflow, and automated outreach execution.
+
+---> Setup Notes
+Keep API keys and database credentials out of Git.
+Verify the database configuration before running.
+The current implementation should be treated as the source of truth; documentation files may describe planned functionality that is not yet implemented.
+Do not assume planned features are available unless they exist in the supplied code.
